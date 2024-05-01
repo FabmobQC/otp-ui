@@ -1,0 +1,1 @@
+{"version":3,"file":"stay-on-board.d.ts","sourceRoot":"","sources":["../../src/defaults/stay-on-board.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,wBAAwB,CAAC;AAC/C,OAAc,EAAE,YAAY,EAAE,MAAM,OAAO,CAAC;AAK5C,UAAU,KAAK;IACb,KAAK,EAAE,KAAK,CAAC;CACd;AAED;;GAEG;AACH,MAAM,CAAC,OAAO,UAAU,WAAW,CAAC,EAAE,KAAK,EAAE,EAAE,KAAK,GAAG,YAAY,CAWlE"}

@@ -1,0 +1,4 @@
+/// <reference types="react" />
+declare const StyledItineraryBody: import("styled-components").StyledComponent<({ accessibilityScoreGradationMap, AlertBodyIcon, AlertToggleIcon, alwaysCollapseAlerts, className, config, defaultFareSelector, diagramVisible, frameLeg, itinerary, LegIcon, LineColumnContent, mapillaryCallback, mapillaryKey, PlaceName, RouteDescription, RouteDescriptionFooter, routingType, setActiveLeg, setLegDiagram, setViewedTrip, showAgencyInfo, showElevationProfile, showLegIcon, showMapButtonColumn, showViewTripButton, TimeColumnContent, toRouteAbbreviation, TransitLegSubheader, TransitLegSummary }: import("../types").ItineraryBodyProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>, any, {}, never>;
+export default StyledItineraryBody;
+//# sourceMappingURL=itinerary-body.d.ts.map

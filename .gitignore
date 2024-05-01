@@ -1,8 +1,6 @@
 *.log
 .DS_Store
 .jest-*
-esm
-lib
 node_modules
 .idea
 storybook-static/

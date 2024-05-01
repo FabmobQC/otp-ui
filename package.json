@@ -250,7 +250,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --ignore-pattern lib --ignore-pattern node_modules --fix",
+      "eslint --ignore-pattern lib --ignore-pattern node_modules --ignore-pattern esm --fix",
       "stylelint \"packages/**/!(*.d).{j,t}s{,x}\" --fix",
       "git add"
     ],

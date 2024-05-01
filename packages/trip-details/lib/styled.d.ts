@@ -1,0 +1,19 @@
+export declare const CO2Description: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const CO2Summary: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const ExpandButton: import("styled-components").StyledComponent<"button", any, {}, never>;
+export declare const Fare: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const HideButton: import("styled-components").StyledComponent<"button", any, {}, never>;
+export declare const TNCFare: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const TNCFareCompanies: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const Timing: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const TransitFare: import("styled-components").StyledComponent<"details", any, {}, never>;
+export declare const TransitFareSingle: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const FlexSummary: import("styled-components").StyledComponent<"span", any, {}, never>;
+export declare const TripDetail: import("styled-components").StyledComponent<"div", any, {}, never>;
+export declare const TripDetailDescription: import("styled-components").StyledComponent<"div", any, {}, never>;
+export declare const TripDetailIcon: import("styled-components").StyledComponent<"div", any, {}, never>;
+export declare const TripDetails: import("styled-components").StyledComponent<"div", any, {}, never>;
+export declare const TripDetailsBody: import("styled-components").StyledComponent<"div", any, {}, never>;
+export declare const TripDetailsHeader: import("styled-components").StyledComponent<"h2", any, {}, never>;
+export declare const TripDetailSummary: import("styled-components").StyledComponent<"div", any, {}, never>;
+//# sourceMappingURL=styled.d.ts.map

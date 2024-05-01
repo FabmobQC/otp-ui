@@ -1,0 +1,4 @@
+import { ReactElement } from "react";
+import { PlaceRowProps } from "../types";
+export default function PlaceRow({ accessibilityScoreGradationMap, AlertBodyIcon, AlertToggleIcon, alwaysCollapseAlerts, config, defaultFareSelector, diagramVisible, followsTransit, frameLeg, isDestination, lastLeg, leg, LegIcon, legIndex, LineColumnContent, mapillaryCallback, mapillaryKey, PlaceName, RouteDescription, RouteDescriptionFooter, setActiveLeg, setLegDiagram, setViewedTrip, showAgencyInfo, showElevationProfile, showLegIcon, showMapButtonColumn, showViewTripButton, TimeColumnContent, toRouteAbbreviation, TransitLegSubheader, TransitLegSummary }: PlaceRowProps): ReactElement;
+//# sourceMappingURL=place-row.d.ts.map

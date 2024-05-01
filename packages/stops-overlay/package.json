@@ -21,11 +21,11 @@
   "dependencies": {
     "@opentripplanner/base-map": "^3.0.15",
     "@opentripplanner/from-to-location-picker": "^2.1.11",
-    "@opentripplanner/map-popup": "^3.0.0",
+    "@opentripplanner/map-popup": "^3.0.1",
     "flat": "^5.0.2"
   },
   "devDependencies": {
-    "@opentripplanner/types": "^6.2.1",
+    "@opentripplanner/types": "^6.3.0",
     "styled-icons": "^10.34.0"
   },
   "peerDependencies": {

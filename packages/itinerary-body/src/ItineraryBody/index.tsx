@@ -103,7 +103,12 @@ const ItineraryBody = ({
     if (leg.transitLeg) followsTransit = true;
     lastLeg = leg;
   });
-  return <S.ItineraryBody className={className}>{rows}</S.ItineraryBody>;
+  return (
+    <S.ItineraryBody className={className}>
+      TEST
+      {rows}
+    </S.ItineraryBody>
+  );
 };
 
 export default ItineraryBody;
