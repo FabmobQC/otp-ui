@@ -58,6 +58,13 @@ export function getSummaryMode(leg: Leg, intl: IntlShape): string {
         description: "Walk to somewhere",
         id: "otpUi.AccessLegBody.summaryMode.walk"
       });
+    case "STOPOVER":
+      return intl.formatMessage({
+        defaultMessage:
+          defaultMessages["fabmob.AccessLegBody.summaryMode.stopover"],
+        description: "Stop somewhere",
+        id: "fabmob.AccessLegBody.summaryMode.stopover"
+      });
     default:
       return leg.mode;
   }
@@ -87,6 +94,14 @@ export default function AccessLegDescription({
       {getPlaceName(toPlace, config.companies, intl)}
     </S.LegDescriptionPlace>
   );
+
+  if (leg.mode === "STOPOVER") {
+    return (
+      <span className={className} style={style}>
+        {modeContent}
+      </span>
+    );
+  }
 
   return (
     // Return an HTML element which is passed a className (and style props)

@@ -1,3 +1,10 @@
+fabmob:
+  AccessLegBody:
+    summaryMode:
+      stopover: Stopover
+  ItineraryBody:
+    travelByMode:
+      stopover: stopover
 otpUi:
   AccessLegBody:
     LegDiagramPreview:

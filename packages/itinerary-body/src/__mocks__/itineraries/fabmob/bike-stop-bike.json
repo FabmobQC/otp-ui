@@ -1,0 +1,219 @@
+{
+  "accessibilityScore": null,
+  "duration": 3722,
+  "endTime": 1714685942000,
+  "legs": [
+    {
+      "accessibilityScore": null,
+      "agency": null,
+      "alerts": [],
+      "arrivalDelay": 0,
+      "departureDelay": 0,
+      "distance": 176.54,
+      "dropOffBookingInfo": null,
+      "dropoffType": "SCHEDULED",
+      "duration": 92,
+      "endTime": 1714682312000,
+      "fareProducts": [],
+      "from": {
+        "lat": 45.5084426,
+        "lon": -73.5712917,
+        "name": "45,50844; -73,57129",
+        "rentalVehicle": null,
+        "stop": null,
+        "vertexType": "NORMAL"
+      },
+      "headsign": null,
+      "interlineWithPreviousLeg": false,
+      "intermediateStops": null,
+      "legGeometry": {
+        "length": 10,
+        "points": "yjwtGnk``MBGNSHD`@eAJWn@cBBGt@qBGE"
+      },
+      "mode": "BICYCLE",
+      "pickupBookingInfo": null,
+      "pickupType": "SCHEDULED",
+      "realTime": false,
+      "realtimeState": null,
+      "rentedBike": false,
+      "rideHailingEstimate": null,
+      "route": null,
+      "startTime": 1714682220000,
+      "steps": [
+        {
+          "absoluteDirection": "SOUTHEAST",
+          "alerts": [],
+          "area": false,
+          "distance": 15.46,
+          "elevationProfile": [],
+          "lat": 45.508457,
+          "lon": -73.5712725,
+          "relativeDirection": "DEPART",
+          "stayOn": false,
+          "streetName": "path"
+        },
+        {
+          "absoluteDirection": "SOUTH",
+          "alerts": [],
+          "area": false,
+          "distance": 6.97,
+          "elevationProfile": [],
+          "lat": 45.5083596,
+          "lon": -73.5711309,
+          "relativeDirection": "RIGHT",
+          "stayOn": true,
+          "streetName": "path"
+        },
+        {
+          "absoluteDirection": "SOUTHEAST",
+          "alerts": [],
+          "area": false,
+          "distance": 148.83,
+          "elevationProfile": [],
+          "lat": 45.5083016,
+          "lon": -73.5711647,
+          "relativeDirection": "LEFT",
+          "stayOn": false,
+          "streetName": "Rue De Bleury"
+        },
+        {
+          "absoluteDirection": "NORTHEAST",
+          "alerts": [],
+          "area": false,
+          "distance": 5.3,
+          "elevationProfile": [],
+          "lat": 45.5075467,
+          "lon": -73.5695878,
+          "relativeDirection": "LEFT",
+          "stayOn": false,
+          "streetName": "path"
+        }
+      ],
+      "to": {
+        "lat": 45.5075767,
+        "lon": -73.5695291,
+        "name": "Station Place-des-Arts / De Bleury, Avenue du Président-Kennedy, Ville-Marie, Quebec, H2X 3Y7, Montreal, Canada",
+        "rentalVehicle": null,
+        "stop": null,
+        "vertexType": "NORMAL"
+      },
+      "transitLeg": false,
+      "trip": null
+    },
+    {
+      "arrivalDelay": 0,
+      "agencyTimeZoneOffset": 0,
+      "departureDelay": 0,
+      "distance": 0,
+      "duration": 3722,
+      "endTime": 1714685880000,
+      "from": {
+        "lat": 45.5075767,
+        "lon": -73.5695291,
+        "name": "Station Place-des-Arts / De Bleury, Avenue du Président-Kennedy, Ville-Marie, Quebec, H2X 3Y7, Montreal, Canada",
+        "rentalVehicle": null,
+        "stop": null,
+        "vertexType": "NORMAL"
+      },
+      "interlineWithPreviousLeg": false,
+      "intermediateStops": [],
+      "legGeometry": {
+        "length": 0,
+        "points": ""
+      },
+      "mode": "STOPOVER",
+      "pathway": false,
+      "realTime": false,
+      "rentedBike": false,
+      "rentedCar": false,
+      "rentedVehicle": false,
+      "startTime": 1714682312000,
+      "steps": [],
+      "to": {
+        "lat": 45.5075767,
+        "lon": -73.5695291,
+        "name": "Station Place-des-Arts / De Bleury, Avenue du Président-Kennedy, Ville-Marie, Quebec, H2X 3Y7, Montreal, Canada",
+        "rentalVehicle": null,
+        "stop": null,
+        "vertexType": "NORMAL"
+      },
+      "transitLeg": false
+    },
+    {
+      "accessibilityScore": null,
+      "agency": null,
+      "alerts": [],
+      "arrivalDelay": 0,
+      "departureDelay": 0,
+      "distance": 117.26,
+      "dropOffBookingInfo": null,
+      "dropoffType": "SCHEDULED",
+      "duration": 62,
+      "endTime": 1714685942000,
+      "fareProducts": [],
+      "from": {
+        "lat": 45.5075767,
+        "lon": -73.5695291,
+        "name": "Station Place-des-Arts / De Bleury, Avenue du Président-Kennedy, Ville-Marie, Quebec, H2X 3Y7, Montreal, Canada",
+        "rentalVehicle": null,
+        "stop": null,
+        "vertexType": "NORMAL"
+      },
+      "headsign": null,
+      "interlineWithPreviousLeg": false,
+      "intermediateStops": null,
+      "legGeometry": {
+        "length": 8,
+        "points": "kewtGv```MCCFMs@o@]YeA_AIGCA"
+      },
+      "mode": "BICYCLE",
+      "pickupBookingInfo": null,
+      "pickupType": "SCHEDULED",
+      "realTime": false,
+      "realtimeState": null,
+      "rentedBike": false,
+      "rideHailingEstimate": null,
+      "route": null,
+      "startTime": 1714685880000,
+      "steps": [
+        {
+          "absoluteDirection": "NORTHEAST",
+          "alerts": [],
+          "area": false,
+          "distance": 9.02,
+          "elevationProfile": [],
+          "lat": 45.5075866,
+          "lon": -73.5695506,
+          "relativeDirection": "DEPART",
+          "stayOn": false,
+          "streetName": "path"
+        },
+        {
+          "absoluteDirection": "NORTHEAST",
+          "alerts": [],
+          "area": false,
+          "distance": 108.25,
+          "elevationProfile": [],
+          "lat": 45.5075686,
+          "lon": -73.5694605,
+          "relativeDirection": "LEFT",
+          "stayOn": false,
+          "streetName": "Avenue du Président-Kennedy"
+        }
+      ],
+      "to": {
+        "lat": 45.5083989,
+        "lon": -73.5687361,
+        "name": "Rue Jeanne-Mance et avenue du Président-Kennedy, Rue Jeanne-Mance, Ville-Marie, Quebec, H2X 3Y7, Montreal, Canada",
+        "rentalVehicle": null,
+        "stop": null,
+        "vertexType": "NORMAL"
+      },
+      "transitLeg": false,
+      "trip": null
+    }
+  ],
+  "startTime": 1714682220000,
+  "waitingTime": 0,
+  "walkTime": 0
+}

@@ -3241,6 +3241,31 @@
   resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
   integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
 
+<<<<<<< Updated upstream
+=======
+"@opentripplanner/itinerary-body@file:packages/itinerary-body":
+  version "5.2.2"
+  dependencies:
+    "@opentripplanner/core-utils" "^11.1.3"
+    "@opentripplanner/humanize-distance" "^1.2.0"
+    "@opentripplanner/icons" "^2.0.7"
+    "@opentripplanner/location-icon" "^1.4.1"
+    "@styled-icons/fa-solid" "^10.34.0"
+    "@styled-icons/foundation" "^10.34.0"
+    date-fns "^2.28.0"
+    date-fns-tz "^1.2.2"
+    flat "^5.0.2"
+    react-animate-height "^3.0.4"
+    react-resize-detector "^4.2.1"
+    string-similarity "^4.0.4"
+
+"@opentripplanner/location-icon@file:packages/location-icon":
+  version "1.4.1"
+  dependencies:
+    "@styled-icons/fa-regular" "^10.34.0"
+    "@styled-icons/fa-solid" "^10.34.0"
+
+>>>>>>> Stashed changes
 "@opentripplanner/map-popup@^2.0.8":
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/@opentripplanner/map-popup/-/map-popup-2.0.8.tgz#10ae146068e600848834b3451e98e6dc74a98e38"

@@ -239,6 +239,7 @@ export interface PlaceRowProps
     LegSharedProps {
   /** Indicates whether this leg directly follows a transit leg */
   followsTransit?: boolean;
+  followsStopover?: boolean; // fabmob
 }
 
 export interface ItineraryBodyProps extends ItineraryBodySharedProps {

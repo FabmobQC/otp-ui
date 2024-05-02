@@ -44,6 +44,13 @@ function getTravelMode(modeId: string, intl: IntlShape): string {
         description: "Travel by walking",
         id: "otpUi.ItineraryBody.travelByMode.walk"
       });
+    case "STOPOVER":
+      return intl.formatMessage({
+        defaultMessage:
+          defaultMessages["fabmob.ItineraryBody.travelByMode.stopover"],
+        description: "Stop somewhere",
+        id: "fabmob.ItineraryBody.travelByMode.stopover"
+      });
     default:
       return modeId;
   }

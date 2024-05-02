@@ -50,6 +50,7 @@ const ItineraryBody = ({
   */
   const rows = [];
   let followsTransit = false;
+  let followsStopover = false;
   let lastLeg;
   itinerary.legs.forEach((leg, i) => {
     function createPlaceRow(isDestination) {
@@ -91,6 +92,7 @@ const ItineraryBody = ({
           toRouteAbbreviation={toRouteAbbreviation}
           TransitLegSubheader={TransitLegSubheader}
           TransitLegSummary={TransitLegSummary}
+          followsStopover={followsStopover}
         />
       );
     }
@@ -101,6 +103,7 @@ const ItineraryBody = ({
       createPlaceRow(true);
     }
     if (leg.transitLeg) followsTransit = true;
+    followsStopover = leg.mode === "STOPOVER";
     lastLeg = leg;
   });
   return <S.ItineraryBody className={className}>{rows}</S.ItineraryBody>;

@@ -16,6 +16,7 @@ import { defaultMessages } from "../util";
   preferences from the config object and avoid making the props list so long
 */
 export default function PlaceRow({
+  followsStopover,
   accessibilityScoreGradationMap,
   AlertBodyIcon,
   AlertToggleIcon,
@@ -96,7 +97,9 @@ export default function PlaceRow({
             */}
         {interline && <S.InterlineDot>&bull;</S.InterlineDot>}
         <S.PlaceName aria-hidden>
-          <PlaceName config={config} interline={interline} place={place} />
+          {(!followsStopover || isDestination) && (
+            <PlaceName config={config} interline={interline} place={place} />
+          )}
         </S.PlaceName>
       </S.PlaceHeader>
       <S.TimeColumn>
