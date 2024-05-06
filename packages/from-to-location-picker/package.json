@@ -9,7 +9,7 @@
   "module": "esm/index.js",
   "private": false,
   "dependencies": {
-    "@opentripplanner/location-icon": "^1.4.1",
+    "@opentripplanner/location-icon": "file:../location-icon",
     "flat": "^5.0.2"
   },
   "devDependencies": {

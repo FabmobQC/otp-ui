@@ -30,6 +30,9 @@ export function LocationIcon({
     case "to":
       return <S.ToIcon className={className} size={size} />;
     default:
+      if (type.startsWith("additional-place")) {
+        return <S.ToIcon className={className} size={size} />;
+      }
       return <S.PlaceIcon className={className} size={size} />;
   }
 }
