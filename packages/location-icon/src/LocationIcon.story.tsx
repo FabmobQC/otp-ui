@@ -20,3 +20,7 @@ export const CustomStyleForTo = () => {
   `;
   return <StyledLocationIcon type="to" size={25} />;
 };
+
+export const FabMobAdditionalPlace = () => (
+  <LocationIcon type="additional-place-1" size={25} />
+);

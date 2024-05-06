@@ -3,7 +3,7 @@ import React, { ComponentType, ReactNode } from "react";
 // eslint-disable-next-line prettier/prettier
 import type { IntlShape } from "react-intl";
 
-export type LocationType = "from" | "to" | `intermediate-place-${number}`;
+export type LocationType = "from" | "to" | `intermediate-place-${number}` | `additional-place-${number}`;
 export type ResultType =
   | "CURRENT_LOCATION"
   | "GEOCODE"

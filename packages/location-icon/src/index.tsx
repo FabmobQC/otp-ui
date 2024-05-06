@@ -24,12 +24,19 @@ export function LocationIcon({
   size = 10,
   type = ""
 }: Props): ReactElement {
+  console.log("cossin ici");
   switch (type) {
     case "from":
       return <S.FromIcon className={className} size={size} />;
     case "to":
       return <S.ToIcon className={className} size={size} />;
     default:
+      console.log("cossin 2");
+      if (type.startsWith("additional-place")) {
+        console.log("cossin 3");
+        return <S.ToIcon className={className} size={size} />;
+      }
+      console.log("cossin 4");
       return <S.PlaceIcon className={className} size={size} />;
   }
 }
