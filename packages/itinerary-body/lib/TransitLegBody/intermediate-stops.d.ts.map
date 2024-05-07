@@ -1,0 +1,1 @@
+{"version":3,"file":"intermediate-stops.d.ts","sourceRoot":"","sources":["../../src/TransitLegBody/intermediate-stops.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,wBAAwB,CAAC;AAC/C,OAAc,EAAE,YAAY,EAAE,MAAM,OAAO,CAAC;AAI5C,UAAU,KAAK;IACb,KAAK,EAAE,KAAK,EAAE,CAAC;CAChB;AAED,MAAM,CAAC,OAAO,UAAU,iBAAiB,CAAC,EAAE,KAAK,EAAE,EAAE,KAAK,GAAG,YAAY,CAWxE"}

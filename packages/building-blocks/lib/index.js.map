@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;AACA;;AACA","sourcesContent":["import blue from \"./colors/blue\";\nimport red from \"./colors/red\";\nimport grey from \"./colors/grey\";\n\nexport { blue, red, grey };\n"],"file":"index.js"}
