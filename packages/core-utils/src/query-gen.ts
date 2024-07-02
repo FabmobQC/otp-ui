@@ -33,6 +33,7 @@ type OTPQueryParams = {
   to: LonLatOutput & { name?: string };
   banned?: InputBanned;
   preferred?: InputPreferred;
+  unpreferred?: InputPreferred;
 };
 
 type GraphQLQuery = {
@@ -112,6 +113,7 @@ export const SIMPLIFICATIONS = {
   FUNICULAR: "TRANSIT",
   GONDOLA: "TRANSIT",
   RAIL: "TRANSIT",
+  MONORAIL: "TRANSIT",
   SCOOTER: "PERSONAL",
   SUBWAY: "TRANSIT",
   TROLLEYBUS: "TRANSIT",
@@ -222,7 +224,8 @@ export function generateOtp2Query(
     numItineraries,
     preferred,
     time,
-    to
+    to,
+    unpreferred
   }: OTPQueryParams,
   planQuery = DefaultPlanQuery
 ): GraphQLQuery {
@@ -263,6 +266,7 @@ export function generateOtp2Query(
       preferred,
       time,
       toPlace: `${to.name}::${to.lat},${to.lon}}`,
+      unpreferred,
       walkReluctance,
       walkSpeed,
       wheelchair
