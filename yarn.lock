@@ -4609,12 +4609,12 @@
   integrity sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==
 
 "@opentripplanner/itinerary-body@file:packages/itinerary-body":
-  version "5.3.0"
+  version "6.1.1"
   dependencies:
-    "@opentripplanner/core-utils" "^11.4.0"
+    "@opentripplanner/core-utils" "^12.0.0"
     "@opentripplanner/humanize-distance" "^1.2.0"
-    "@opentripplanner/icons" "^2.0.10"
-    "@opentripplanner/location-icon" "file:../../.cache/yarn/v6/npm-@opentripplanner-itinerary-body-5.3.0-4582deab-4ce9-4111-989f-9141632a5fa7-1719952951332/node_modules/@opentripplanner/location-icon"
+    "@opentripplanner/icons" "^3.0.0"
+    "@opentripplanner/location-icon" "file:../../Library/Caches/Yarn/v6/npm-@opentripplanner-itinerary-body-6.1.1-7ec8a8bc-ed9d-4c41-8efc-6612aca658b0-1737132529261/node_modules/@opentripplanner/location-icon"
     "@styled-icons/fa-solid" "^10.34.0"
     "@styled-icons/foundation" "^10.34.0"
     date-fns "^2.28.0"
@@ -4629,11 +4629,6 @@
   dependencies:
     "@styled-icons/fa-regular" "^10.34.0"
     "@styled-icons/fa-solid" "^10.34.0"
-
-"@opentripplanner/types@6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@opentripplanner/types/-/types-6.5.0.tgz#d8cca355bf30f0984283faa793113ad6c0dba38d"
-  integrity sha512-FllEyE+1WQ2GOSKXQOuzrk+OPcJEqr4+zacsHQLB9WVyfm5D/BPHR1/OjfuVngrwLTK5bKP8VlDRS1ba/R8rtg==
 
 "@peculiar/asn1-schema@^2.1.6", "@peculiar/asn1-schema@^2.3.0":
   version "2.3.3"
