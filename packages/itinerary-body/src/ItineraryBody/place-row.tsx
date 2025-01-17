@@ -41,6 +41,8 @@ export default function PlaceRow({
   setLegDiagram,
   setViewedTrip,
   showAgencyInfo,
+  showAlertEffectiveDateTimeText,
+  showApproximateAccessLegTravelTimes,
   showElevationProfile,
   showLegIcon,
   showMapButtonColumn,
@@ -77,7 +79,12 @@ export default function PlaceRow({
   );
 
   return (
-    <S.PlaceRowWrapper key={legIndex || "destination-place"}>
+    <S.PlaceRowWrapper
+      className={`place-row-wrapper ${leg.transitLeg ? "transit" : ""} ${
+        leg.rentedBike ? "rented-bike" : ""
+      }`}
+      key={legIndex || "destination-place"}
+    >
       <S.LineColumn>
         <LineColumnContent
           interline={interline}
@@ -134,7 +141,9 @@ export default function PlaceRow({
           />
         )}
       </S.InvisibleAdditionalDetails>
-      <S.PlaceDetails>
+      <S.PlaceDetails
+        className={`place-details ${leg.transitLeg ? "transit" : ""}`}
+      >
         {/* Show the leg, if not rendering the destination */}
         {!isDestination &&
           (leg.transitLeg ? (
@@ -153,6 +162,7 @@ export default function PlaceRow({
               setActiveLeg={setActiveLeg}
               setViewedTrip={setViewedTrip}
               showAgencyInfo={showAgencyInfo}
+              showAlertEffectiveDateTimeText={showAlertEffectiveDateTimeText}
               showViewTripButton={showViewTripButton}
               timeZone={config.homeTimezone}
               TransitLegSubheader={TransitLegSubheader}
@@ -175,6 +185,7 @@ export default function PlaceRow({
               mapillaryKey={mapillaryKey}
               setActiveLeg={setActiveLeg}
               setLegDiagram={setLegDiagram}
+              showApproximateTravelTime={showApproximateAccessLegTravelTimes}
               showElevationProfile={showElevationProfile}
               showLegIcon={showLegIcon}
               TransitLegSubheader={TransitLegSubheader}
