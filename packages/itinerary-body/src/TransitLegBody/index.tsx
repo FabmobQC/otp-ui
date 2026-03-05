@@ -448,6 +448,6 @@ class TransitLegBody extends Component<Props, State> {
   }
 }
 
-export default injectIntl(TransitLegBody);
+export default injectIntl(TransitLegBody) as any; // fabmob: as any is a quick fix to error TS2742
 
 export { AlertsBody, IntermediateStops, ViewTripButton };

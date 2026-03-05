@@ -143,4 +143,4 @@ class LegDiagramPreview extends Component<Props, State> {
   }
 }
 
-export default injectIntl(LegDiagramPreview);
+export default injectIntl(LegDiagramPreview) as any; // fabmob: as any is a quick fix to error TS2742
