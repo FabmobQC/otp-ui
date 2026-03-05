@@ -1,6 +1,6 @@
 {
   "name": "@opentripplanner/location-field",
-  "version": "3.1.2",
+  "version": "4.1.4",
   "description": "A component for display and finding a location",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -10,20 +10,21 @@
   "private": false,
   "dependencies": {
     "@conveyal/geocoder-arcgis-geojson": "^0.0.3",
-    "@opentripplanner/core-utils": "^12.0.0",
-    "@opentripplanner/geocoder": "^3.0.2",
-    "@opentripplanner/humanize-distance": "^1.2.0",
-    "@opentripplanner/location-icon": "file:../location-icon",
-    "@styled-icons/fa-solid": "^10.34.0",
-    "throttle-debounce": "^2.1.0"
+    "@opentripplanner/core-utils": "workspace:*",
+    "@opentripplanner/geocoder": "workspace:*",
+    "@opentripplanner/humanize-distance": "workspace:*",
+    "@opentripplanner/location-icon": "workspace:*",
+    "@styled-icons/fa-solid": "catalog:",
+    "@tanstack/react-pacer": "^0.8.0",
+    "flat": "catalog:"
   },
   "devDependencies": {
-    "@types/throttle-debounce": "^2.1.0"
+    "@opentripplanner/types": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-intl": "^5.24.6",
-    "styled-components": "^5.3.0"
+    "react": "catalog:",
+    "react-intl": "catalog:",
+    "styled-components": "catalog:"
   },
   "gitHead": "0af1b7cda60bd4252b219dcf893e01c2acb2ed5d",
   "scripts": {

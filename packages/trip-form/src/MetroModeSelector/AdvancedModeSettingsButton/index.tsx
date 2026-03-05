@@ -21,6 +21,10 @@ const StyledModeSettingsButton = styled.div<{
   fillModeIcons: boolean;
   subsettings: boolean;
 }>`
+  span {
+    justify-self: flex-start;
+  }
+
   & > label {
     align-items: center;
     background-color: #fff;
@@ -39,6 +43,10 @@ const StyledModeSettingsButton = styled.div<{
     margin-bottom: 0;
     margin-top: -2px;
     padding: 0 10px;
+
+    span.screenreader-only {
+      ${invisibleCss}
+    }
   }
   & > input {
     ${invisibleCss}
@@ -62,10 +70,6 @@ const StyledModeSettingsButton = styled.div<{
     &:focus + label {
       outline: white 1px solid;
     }
-  }
-
-  span {
-    justify-self: flex-start;
   }
 
   svg {
@@ -108,6 +112,20 @@ const AdvancedModeSettingsButton = ({
   const intl = useIntl();
   const label = generateModeButtonLabel(modeButton.key, intl, modeButton.label);
   const checkboxId = `metro-submode-selector-mode-${id}`;
+  const containsSubsettings = modeButton.modeSettings.length > 0;
+
+  const subsettingsStatusLabel = modeButton.enabled
+    ? intl.formatMessage({
+        id: "otpUi.ModeSelector.labels.subsettingsExpanded"
+      })
+    : intl.formatMessage({
+        id: "otpUi.ModeSelector.labels.subsettingsCollapsed"
+      });
+
+  const accessibilityLabel = containsSubsettings
+    ? label + subsettingsStatusLabel
+    : label;
+
   return (
     <SettingsContainer className="advanced-submode-container">
       <StyledModeSettingsButton
@@ -115,10 +133,9 @@ const AdvancedModeSettingsButton = ({
         className="advanced-submode-mode-button"
         fillModeIcons={fillModeIcons}
         id={modeButton.key}
-        subsettings={modeButton.modeSettings.length > 0}
+        subsettings={containsSubsettings}
       >
         <input
-          aria-label={label}
           checked={modeButton.enabled ?? undefined}
           id={checkboxId}
           onChange={onToggle}
@@ -126,11 +143,14 @@ const AdvancedModeSettingsButton = ({
         />
         <label htmlFor={checkboxId}>
           <modeButton.Icon />
-          <span>{modeButton?.label}</span>
+          {containsSubsettings && (
+            <span className="screenreader-only">{accessibilityLabel}</span>
+          )}
+          <span aria-hidden={containsSubsettings}>{label}</span>
           {modeButton.enabled && <Check2 />}
         </label>
       </StyledModeSettingsButton>
-      {modeButton.modeSettings.length > 0 && (
+      {containsSubsettings && (
         <AnimateHeight duration={300} height={modeButton.enabled ? "auto" : 0}>
           <StyledSettingsContainer className="subsettings-container">
             <SubSettingsPane

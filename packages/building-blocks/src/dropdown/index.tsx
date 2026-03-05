@@ -117,6 +117,7 @@ const Dropdown = ({
         onClick={toggleOpen}
         style={buttonStyle}
         title={label}
+        type="button"
       >
         <span>{text}</span>
         <span className="caret" role="presentation" />
@@ -129,7 +130,7 @@ const Dropdown = ({
           id={id}
           onClick={toggleOpen}
           alignLeft={alignMenuLeft}
-          role={isList && "list"}
+          role={isList && "listbox"}
           tabIndex={-1}
         >
           {children}

@@ -1,5 +1,3 @@
-import { Anchor } from "mapbox-gl";
-
 import lineArc from "@turf/line-arc";
 import lineDistance from "@turf/line-distance";
 import midpoint from "@turf/midpoint";
@@ -7,14 +5,7 @@ import destination from "@turf/destination";
 import bearing from "@turf/bearing";
 import distance from "@turf/distance";
 
-import {
-  getLegBounds,
-  getLegRouteShortName,
-  isAccessMode,
-  isFlex,
-  isRideshareLeg,
-  isTransit
-} from "@opentripplanner/core-utils/lib/itinerary";
+import coreUtils from "@opentripplanner/core-utils";
 import { getPlaceName } from "@opentripplanner/itinerary-body";
 import {
   Company,
@@ -26,6 +17,16 @@ import {
   TransitiveStop
 } from "@opentripplanner/types";
 import { IntlShape } from "react-intl";
+import { PositionAnchor } from "maplibre-gl";
+
+const {
+  getLegBounds,
+  getLegRouteShortName,
+  isAccessMode,
+  isFlex,
+  isRideshareLeg,
+  isTransit
+} = coreUtils.itinerary;
 
 const CAR_PARK_ITIN_PREFIX = "itin_car_";
 
@@ -90,8 +91,8 @@ function makeFromToPlace(place: Place, id: "from" | "to"): TransitivePlace {
 export function getFromToAnchors(
   transitiveData: TransitiveData
 ): {
-  fromAnchor?: Anchor;
-  toAnchor?: Anchor;
+  fromAnchor?: PositionAnchor;
+  toAnchor?: PositionAnchor;
 } {
   const fromPlace = transitiveData.places.find(pl => pl.placeId === "from");
   const toPlace = transitiveData.places.find(pl => pl.placeId === "to");
@@ -178,6 +179,32 @@ function makeStop(stop: Place, coordinate?: number[]) {
 }
 
 /**
+ * Helper function that clones the 'to' stop and applies flex logic
+ * Flex routes sometimes have the same from and to IDs, but
+ * these stops still need to be rendered separately!
+ */
+function renameLegFlexStops(
+  leg: Leg,
+  isFlexCheck: (leg: Leg) => boolean
+): Place {
+  const flexSupportStop = { ...leg.to };
+
+  if (typeof flexSupportStop.stop === "object") {
+    flexSupportStop.stop = { ...flexSupportStop.stop };
+  }
+
+  if (isFlexCheck(leg)) {
+    if (typeof flexSupportStop.stop === "object") {
+      flexSupportStop.stop.id = `${flexSupportStop.stop.id}_flexed_to`;
+    } else {
+      flexSupportStop.stopId = `${flexSupportStop.stopId}_flexed_to`;
+    }
+  }
+
+  return flexSupportStop;
+}
+
+/**
  * Converts an OTP itinerary object to a transtive.js itinerary object.
  * @param {*} itin Required OTP itinerary (see @opentripplanner/core-utils/types#itineraryType) to convert.
  * @param {*} companies Optional list of companies, used for labeling vehicle rental locations.
@@ -192,9 +219,18 @@ export function itineraryToTransitive(
     getRouteLabel?: (leg: Leg) => string;
     disableFlexArc?: boolean;
     intl?: IntlShape;
+    isFlexOverride?: (leg: Leg) => boolean;
   }
 ): TransitiveData {
-  const { companies, getRouteLabel, disableFlexArc, intl } = options;
+  const {
+    companies,
+    getRouteLabel,
+    disableFlexArc,
+    isFlexOverride,
+    intl
+  } = options;
+  const isFlexCheck = isFlexOverride || isFlex;
+
   const tdata = {
     journeys: [],
     streetEdges: [],
@@ -320,16 +356,6 @@ export function itineraryToTransitive(
     }
 
     if (leg.transitLeg || isTransit(leg.mode)) {
-      // Flex routes sometimes have the same from and to IDs, but
-      // these stops still need to be rendered separately!
-      if (isFlex(leg)) {
-        if (typeof leg.to.stop === "object") {
-          leg.to.stop.id = `${leg.to.stop.id}_flexed_to`;
-        } else {
-          leg.to.stopId = `${leg.to.stopId}_flexed_to`;
-        }
-      }
-
       // determine if we have valid inter-stop geometry
       const hasInterStopGeometry = !!leg.interStopGeometry;
       const hasLegGeometry = !!leg.legGeometry?.points;
@@ -383,10 +409,13 @@ export function itineraryToTransitive(
       // Add the "to" end of transit legs to the list of stops.
       // (Do not label stop names if they repeat.)
       const lastCoord = hasLegGeometry && legCoords[legCoords.length - 1];
-      const toStop = makeStop(leg.to, lastCoord);
-      addStop(toStop, newStops, knownStopNames);
+      const modifiedToStop = makeStop(
+        renameLegFlexStops(leg, isFlexCheck),
+        lastCoord
+      );
+      addStop(modifiedToStop, newStops, knownStopNames);
       pattern.stops.push({
-        stop_id: getStopId(leg.to),
+        stop_id: getStopId(modifiedToStop),
         geometry:
           // Some legs don't have intermediateStopGeometry, but do have valid legGeometry
           (hasInterStopGeometry || hasLegGeometry) &&
@@ -408,7 +437,7 @@ export function itineraryToTransitive(
         route_short_name: routeLabel
       };
 
-      if (typeof leg.route === "object") {
+      if (typeof leg.route === "object" && leg.route !== null) {
         routes[routeId] = {
           ...basicRouteAttributes,
           route_long_name: leg.route.longName || "",
@@ -432,7 +461,9 @@ export function itineraryToTransitive(
       // add the pattern reference to the journey object
       journey.segments.push({
         arc:
-          typeof disableFlexArc === "undefined" ? isFlex(leg) : !disableFlexArc,
+          typeof disableFlexArc === "undefined"
+            ? isFlexCheck(leg)
+            : !disableFlexArc,
         type: "TRANSIT",
         patterns: [
           {

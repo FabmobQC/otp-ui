@@ -6,7 +6,27 @@ import PlaceRow from "./ItineraryBody/place-row";
 import RouteBadge from "./RouteBadge";
 import TransitLegBody from "./TransitLegBody";
 import * as Styled from "./styled";
-import { getPlaceName } from "./util";
+import { getPlaceName, parseOTP2Minute } from "./util";
+// eslint-disable-next-line prettier/prettier
+import type {
+  RouteDescriptionProps,
+  RouteDescriptionFooterProps,
+  ToRouteAbbreviationFunction,
+  LegDestination,
+  TimeColumnContentProps,
+  LegSharedProps,
+  LineColumnContentProps,
+  PlaceNameProps,
+  SetActiveLegFunction,
+  FrameLegFunction,
+  TripSection,
+  SetViewedTripFunction,
+  TransitLegSubheaderProps,
+  TransitLegSummaryProps,
+  PlaceRowProps,
+  ItineraryBodyProps
+} from "./types";
+import * as Types from "./types";
 
 export default ItineraryBody;
 
@@ -19,5 +39,23 @@ export {
   RouteBadge,
   Styled,
   TransitLegBody,
-  getPlaceName
+  getPlaceName,
+  parseOTP2Minute,
+  RouteDescriptionProps,
+  RouteDescriptionFooterProps,
+  ToRouteAbbreviationFunction,
+  LegDestination,
+  TimeColumnContentProps,
+  LegSharedProps,
+  LineColumnContentProps,
+  PlaceNameProps,
+  SetActiveLegFunction,
+  FrameLegFunction,
+  TripSection,
+  SetViewedTripFunction,
+  TransitLegSubheaderProps,
+  TransitLegSummaryProps,
+  PlaceRowProps,
+  ItineraryBodyProps,
+  Types
 };

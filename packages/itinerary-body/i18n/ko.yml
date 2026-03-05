@@ -58,6 +58,7 @@ otpUi:
       carHail: 타다
       escooter: 타다
       walk: 걷기
+    transfer: 환승{duration, select, undefined {} other {, 대기 {duration}}}
     unnamedPath: 이름 없는 경로
     unnamedRoad: 이름 없는 길
     vehicleTitle: "{company} {vehicleType}"
@@ -92,8 +93,11 @@ otpUi:
     viewOnMap: 지도 보기
   TransitLegBody:
     AlertsBody:
+      alertLinkText: "{agency} 웹사이트에서 알림 확인"
       effectiveDate: "{dateTime, date, long}자로 유효"
       effectiveTimeAndDate: "{day} {dateTime, time, short}자로 유효"
+      linkOpensNewWindow: (새 창 열림)
+      noAgencyAlertLinkText: 기관 웹사이트에서 알림 확인
       today: 오늘
       tomorrow: 내일
       yesterday: 어제

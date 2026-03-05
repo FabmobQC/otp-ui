@@ -5,7 +5,13 @@ import getGeocoder from "@opentripplanner/geocoder";
 // @ts-ignore Not Typescripted Yet
 import LocationIcon from "@opentripplanner/location-icon";
 import { Location } from "@opentripplanner/types";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { FormattedList, FormattedMessage, useIntl } from "react-intl";
 import { Ban } from "@styled-icons/fa-solid/Ban";
 import { Bus } from "@styled-icons/fa-solid/Bus";
@@ -13,7 +19,7 @@ import { ExclamationCircle } from "@styled-icons/fa-solid/ExclamationCircle";
 import { LocationArrow } from "@styled-icons/fa-solid/LocationArrow";
 import { Search } from "@styled-icons/fa-solid/Search";
 import { Times } from "@styled-icons/fa-solid/Times";
-import { debounce } from "throttle-debounce";
+import { debounce } from "@tanstack/pacer";
 
 import flatten from "flat";
 import {
@@ -36,18 +42,18 @@ import {
 } from "./utils";
 import defaultEnglishMessages from "../i18n/en-US.yml";
 
-const optionIdPrefix = "otpui-locf-option";
+type IndexedOptionLookup = Array<{ id: string; locationSelected: () => void }>;
 
-/**
- * Formats the option id based on its given index position.
- * This assumes only one location dropdown is shown at a time.
- */
-function getOptionId(index: number): string {
-  return `${optionIdPrefix}-${index}`;
+function generateOptionId(optionPrefix, feature, featureIndex) {
+  const featureId =
+    feature.properties?.id ||
+    feature.properties?.label ||
+    feature.displayName ||
+    // As a last resort, use the index of the feature in the category
+    featureIndex.toString();
+  const id = `${optionPrefix}-${featureId.replace(/\s/g, "-")}`;
+  return id;
 }
-
-// FIXME have a better key generator for options
-let optionKey = 0;
 
 function DefaultLocationIcon({
   locationType
@@ -58,7 +64,7 @@ function DefaultLocationIcon({
 }
 
 /**
- * Helper function that includes or excludes features based om layers.
+ * Helper function that includes or excludes features based om layers
  */
 function filter(
   list: any[],
@@ -135,16 +141,22 @@ function getFeaturesByCategoryWithLimit(
 /**
  * Helper to render and register a user-saved location.
  */
-function makeUserOption(userLocation, index, key, activeIndex, selectHandlers) {
+function makeUserOption(
+  userLocation,
+  id,
+  activeIndex,
+  pushToIndexedOptions,
+  indexedOptionLookup
+) {
   const { displayName, icon, locationSelected } = userLocation;
   // Add to the selection handler lookup (for use in onKeyDown)
-  selectHandlers[index] = locationSelected;
+  pushToIndexedOptions(locationSelected, id);
   return (
     <Option
       icon={icon}
-      id={getOptionId(index)}
-      isActive={index === activeIndex}
-      key={key}
+      id={id}
+      isActive={indexedOptionLookup[activeIndex]?.id === id}
+      key={id}
       onClick={locationSelected}
       title={displayName}
     />
@@ -152,40 +164,18 @@ function makeUserOption(userLocation, index, key, activeIndex, selectHandlers) {
 }
 
 const renderFeature = (
-  itemIndex,
   layerColorMap,
   feature,
   operatorIconMap,
-  setLocation,
-  addLocationSearch,
   showSecondaryLabels,
-  locationSelectedLookup,
   activeIndex,
   GeocodedOptionIconComponent,
-  geocoderConfig
+  indexedOptionLookup
 ) => {
   // generate the friendly labels for this feature
   const { main, secondary } = generateLabel(feature.properties);
 
   // Create the selection handler
-  const locationSelected = () => {
-    getGeocoder(geocoderConfig)
-      .getLocationFromGeocodedFeature(feature)
-      .then(geocodedLocation => {
-        // add the friendly location labels for use later on
-        geocodedLocation.main = main;
-        geocodedLocation.secondary = secondary;
-        geocodedLocation.name = getCombinedLabel(feature.properties);
-        // Set the current location
-        setLocation(geocodedLocation, "GEOCODE");
-        // Add to the location search history. This is intended to
-        // populate the sessionSearches array.
-        addLocationSearch({ location: geocodedLocation });
-      });
-  };
-
-  // Add to the selection handler lookup (for use in onKeyDown)
-  locationSelectedLookup[itemIndex] = locationSelected;
 
   // Extract GTFS/POI info and assign to class
   const { id, layer, secondaryLabels, source } = feature.properties;
@@ -210,10 +200,10 @@ const renderFeature = (
       classes={classNames.join(" ")}
       color={layerColorMap[layer]}
       icon={operatorIcon || <GeocodedOptionIconComponent feature={feature} />}
-      id={getOptionId(itemIndex)}
-      isActive={itemIndex === activeIndex}
-      key={optionKey++}
-      onClick={locationSelected}
+      id={feature.id}
+      isActive={indexedOptionLookup[activeIndex]?.id === feature.id}
+      key={feature.id}
+      onClick={feature.locationSelected}
       title={main}
       subTitle={secondary}
       secondaryLabels={secondaryLabels}
@@ -240,40 +230,31 @@ const FeatureHeader = ({
 
 const FeaturesElements = ({
   activeIndex,
-  addLocationSearch,
   bgColor,
   features,
   GeocodedOptionIconComponent,
-  geocoderConfig,
   headerMessage,
   headingType,
-  itemIndex,
+  indexedOptionLookup,
   layerColorMap,
-  locationSelectedLookup,
   operatorIconMap,
-  setLocation,
   showSecondaryLabels,
   title
 }: {
   activeIndex: number;
-  addLocationSearch: ({
-    location: GeocodedLocation
-  }: {
-    location: any;
-  }) => void;
+  addLocationSearch: (props: { location: any }) => void;
   bgColor: string;
   features: JSX.Element[];
   GeocodedOptionIconComponent: any;
   geocoderConfig: any;
   headerMessage: JSX.Element;
   headingType: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  itemIndex: number;
   layerColorMap: any;
-  locationSelectedLookup: any;
   operatorIconMap: any;
   setLocation: (newLocation: Location, resultType: ResultType) => void;
   showSecondaryLabels: boolean;
   title: string;
+  indexedOptionLookup: IndexedOptionLookup;
 }) => {
   return (
     <>
@@ -285,17 +266,13 @@ const FeaturesElements = ({
       />
       {features.map(feature =>
         renderFeature(
-          itemIndex++,
           layerColorMap,
           feature,
           operatorIconMap,
-          setLocation,
-          addLocationSearch,
           showSecondaryLabels,
-          locationSelectedLookup,
           activeIndex,
           GeocodedOptionIconComponent,
-          geocoderConfig
+          indexedOptionLookup
         )
       )}
     </>
@@ -377,6 +354,7 @@ const LocationField = ({
     // location could be null if none is set
     setValue(location?.name || "");
     setGeocodedFeatures([]);
+    setMessage(null);
   }, [location]);
 
   useEffect(() => {
@@ -386,129 +364,140 @@ const LocationField = ({
     }
   }, [initialSearchResults]);
 
-  // TODO: is it possible to restore the useCallback while also setting
-  // a new abort controller?
-  const geocodeAutocomplete = debounce(300, (text: string) => {
-    if (!text) {
-      console.warn("No text entry provided for geocode autocomplete search.");
-      setMessage(null);
-      return;
-    }
-    setFetching(true);
-    setMessage(
-      intl.formatMessage({
-        defaultMessage: "Fetching suggestions…",
-        description: "Hint shown while geocoder suggestions are being fetched",
-        id: "otpUi.LocationField.fetchingSuggestions"
-      })
-    );
-    const newController = new AbortController();
-    setAbortController([...abortControllers, newController]);
-
-    getGeocoder(geocoderConfig)
-      .autocomplete({ text, options: { signal: newController.signal } })
-      // TODO: Better type?
-      .then(
-        (result: {
-          features: Location[];
-          results: { error: { message: string } };
-        }) => {
-          let message: string;
-          // If no features found in response, default to empty array.
-          let geocodedFeatures = result?.features;
-          if (!geocodedFeatures) {
-            // Get the Pelias error message if exists.
-            // TODO: determine how other geocoders return error messages.
-            const errorMessage = result?.results?.error?.message;
-            // If the result did not contain a list of features, add special note.
-            message = getGeocoderErrorMessage(intl, errorMessage);
-            geocodedFeatures = [];
-          } else {
-            const {
-              otherFeatures,
-              stationFeatures,
-              stopFeatures
-            } = getFeaturesByCategoryWithLimit(
-              geocodedFeatures,
-              suggestionCount,
-              sortByDistance,
-              preferredLayers
-            );
-            // Breakdown results found by type.
-            const parts = [];
-            if (stopFeatures.length) {
-              parts.push(
-                intl.formatMessage(
-                  {
-                    description: "Shows the count of transit stops",
-                    id: "otpUi.LocationField.stopCount"
-                  },
-                  { count: stopFeatures.length }
-                )
-              );
-            }
-            if (stationFeatures.length) {
-              parts.push(
-                intl.formatMessage(
-                  {
-                    description: "Shows the count of stations",
-                    id: "otpUi.LocationField.stationCount"
-                  },
-                  { count: stationFeatures.length }
-                )
-              );
-            }
-            if (otherFeatures.length) {
-              parts.push(
-                intl.formatMessage(
-                  {
-                    description: "Shows the count of other places",
-                    id: "otpUi.LocationField.otherCount"
-                  },
-                  { count: otherFeatures.length }
-                )
-              );
-            }
-            const hasResults = parts.length !== 0;
-            const results = hasResults
-              ? intl.formatList(parts, { type: "conjunction" })
-              : intl.formatMessage({
-                  description: "Indicates no results",
-                  id: "otpUi.LocationField.noResults"
-                });
-            const resultsFoundText = intl.formatMessage(
-              {
-                description: "Text about geocoder results found",
-                id: "otpUi.LocationField.resultsFound"
-              },
-              {
-                input: text,
-                results
-              }
-            );
-            if (hasResults) {
-              // If there are results, concatenate sentences about results found and
-              // instructions for assistive technology users on how to access results.
-              const instructions = intl.formatMessage({
-                description: "Instructions on accessing geocoder results",
-                id: "otpUi.LocationField.howToAccessResults"
-              });
-              message = `${resultsFoundText} ${instructions}`;
-            } else {
-              message = resultsFoundText;
-            }
-          }
-          setGeocodedFeatures(geocodedFeatures);
-          setMessage(message);
-          setFetching(false);
+  const geocodeAutocomplete = useCallback(
+    debounce(
+      (text: string) => {
+        if (!text || text.trim() === "") {
+          console.warn(
+            "No text entry provided for geocode autocomplete search."
+          );
+          setMessage(null);
+          setGeocodedFeatures([]);
+          setMenuVisible(false);
+          return;
         }
-      )
-      .catch((err: unknown) => {
-        console.error(err);
-        const message = getGeocoderErrorMessage(intl, err.toString());
-        setMessage(message);
-      });
-  });
+        setFetching(true);
+        setMessage(
+          intl.formatMessage({
+            defaultMessage: "Fetching suggestions…",
+            description:
+              "Hint shown while geocoder suggestions are being fetched",
+            id: "otpUi.LocationField.fetchingSuggestions"
+          })
+        );
+        const newController = new AbortController();
+        setAbortController([...abortControllers, newController]);
+
+        getGeocoder(geocoderConfig)
+          .autocomplete({ text, options: { signal: newController.signal } })
+          // TODO: Better type?
+          .then(
+            (result: {
+              features: Location[];
+              results: { error: { message: string } };
+            }) => {
+              let message: ReactNode;
+              // If no features found in response, default to empty array.
+              let geocodedFeatures = result?.features;
+              if (!geocodedFeatures) {
+                // Get the Pelias error message if exists.
+                // TODO: determine how other geocoders return error messages.
+                const errorMessage = result?.results?.error?.message;
+                // If the result did not contain a list of features, add special note.
+                message = getGeocoderErrorMessage(intl, errorMessage);
+                geocodedFeatures = [];
+              } else {
+                const {
+                  otherFeatures,
+                  stationFeatures,
+                  stopFeatures
+                } = getFeaturesByCategoryWithLimit(
+                  geocodedFeatures,
+                  suggestionCount,
+                  sortByDistance,
+                  preferredLayers
+                );
+                // Breakdown results found by type.
+                const parts = [];
+                if (stopFeatures.length) {
+                  parts.push(
+                    intl.formatMessage(
+                      {
+                        description: "Shows the count of transit stops",
+                        id: "otpUi.LocationField.stopCount"
+                      },
+                      { count: stopFeatures.length }
+                    )
+                  );
+                }
+                if (stationFeatures.length) {
+                  parts.push(
+                    intl.formatMessage(
+                      {
+                        description: "Shows the count of stations",
+                        id: "otpUi.LocationField.stationCount"
+                      },
+                      { count: stationFeatures.length }
+                    )
+                  );
+                }
+                if (otherFeatures.length) {
+                  parts.push(
+                    intl.formatMessage(
+                      {
+                        description: "Shows the count of other places",
+                        id: "otpUi.LocationField.otherCount"
+                      },
+                      { count: otherFeatures.length }
+                    )
+                  );
+                }
+                const hasResults = parts.length !== 0;
+                const results = hasResults
+                  ? intl.formatList(parts, { type: "conjunction" })
+                  : intl.formatMessage({
+                      description: "Indicates no results",
+                      id: "otpUi.LocationField.noResults"
+                    });
+                const resultsFoundText = intl.formatMessage(
+                  {
+                    description: "Text about geocoder results found",
+                    id: "otpUi.LocationField.resultsFound"
+                  },
+                  {
+                    input: text,
+                    results
+                  }
+                );
+                if (hasResults) {
+                  // If there are results, concatenate sentences about results found and
+                  // instructions for assistive technology users on how to access results.
+                  const instructions = intl.formatMessage({
+                    description: "Instructions on accessing geocoder results",
+                    id: "otpUi.LocationField.howToAccessResults"
+                  });
+                  message = `${resultsFoundText} ${instructions}`;
+                } else {
+                  message = resultsFoundText;
+                }
+              }
+              setGeocodedFeatures(geocodedFeatures);
+              setMessage(message);
+              setFetching(false);
+            }
+          )
+          .catch((err: unknown) => {
+            console.error(err);
+            const message = getGeocoderErrorMessage(intl, err.toString());
+            setMessage(message);
+          });
+      },
+      {
+        wait: 300
+      }
+    ),
+    [intl, geocoderConfig, abortControllers]
+  );
 
   /** Clear selection & hide the menu. */
   const closeMenu = useCallback(() => {
@@ -638,7 +627,8 @@ const LocationField = ({
         if (typeof activeIndex === "number") {
           // Menu is active
           // Retrieve location selection handler from lookup object and invoke
-          const locationSelected = locationSelectedLookup[activeIndex];
+          const locationSelected =
+            indexedOptionLookup[activeIndex]?.locationSelected;
           if (locationSelected) locationSelected();
 
           closeMenu();
@@ -687,6 +677,23 @@ const LocationField = ({
       });
   };
 
+  const setLocationSelected = (feature: any) => {
+    const { main, secondary } = generateLabel(feature.properties);
+    getGeocoder(geocoderConfig)
+      .getLocationFromGeocodedFeature(feature)
+      .then(geocodedLocation => {
+        // add the friendly location labels for use later on
+        geocodedLocation.main = main;
+        geocodedLocation.secondary = secondary;
+        geocodedLocation.name = getCombinedLabel(feature.properties);
+        // Set the current location
+        setLocation(geocodedLocation, "GEOCODE");
+        // Add to the location search history. This is intended to
+        // populate the sessionSearches array.
+        addLocationSearch({ location: geocodedLocation });
+      });
+  };
+
   const message = stateMessage;
   const geocodedFeatures = stateGeocodedFeatures;
 
@@ -697,14 +704,20 @@ const LocationField = ({
   // geocoder search results; (3) nearby transit stops; and (4) saved searches
 
   const statusMessages = [];
+
   let menuItems = []; // array of menu items for display (may include non-selectable items e.g. dividers/headings)
-  let itemIndex = 0; // the index of the current location-associated menu item (excluding non-selectable items)
-  const locationSelectedLookup = {}; // maps itemIndex to a location selection handler (for use by the onKeyDown method)
+  // array of menu item ids and associated locationSelected handlers for onKeyDown
+  // (does not include non-selectable items e.g. dividers/headings)
+  const indexedOptionLookup: IndexedOptionLookup = [];
   const userLocationRenderData = showUserSettings
     ? userLocationsAndRecentPlaces.map(loc =>
         getRenderData(loc, setLocation, UserLocationIconComponent, intl)
       )
     : [];
+
+  const pushToIndexedOptions = (locationSelected, id) => {
+    indexedOptionLookup.push({ id, locationSelected });
+  };
 
   /* 0) Include user saved locations if the typed text contains those locations name. */
   if (showUserSettings) {
@@ -715,13 +728,13 @@ const LocationField = ({
     if (matchingLocations.length) {
       // Iterate through any saved locations
       menuItems = menuItems.concat(
-        matchingLocations.map(userLocation =>
+        matchingLocations.map((userLocation, index) =>
           makeUserOption(
             userLocation,
-            itemIndex++,
-            optionKey++,
-            itemIndex === activeIndex,
-            locationSelectedLookup
+            generateOptionId("user-saved-results", userLocation, index),
+            activeIndex,
+            pushToIndexedOptions,
+            indexedOptionLookup
           )
         )
       );
@@ -730,12 +743,25 @@ const LocationField = ({
 
   /* 1) Process geocode search result option(s) */
   if (geocodedFeatures.length > 0) {
+    /**
+     * Since the results are not guaranteed to be displayed in the same order
+     * as the original order of results, generate the ids and handlers for each
+     * feature beforehand, and then push them to the indexedOptionLookup array
+     * after sorting.
+     */
+    const geocodedFeaturesWithId = geocodedFeatures.map((feature, index) => {
+      return {
+        ...feature,
+        id: generateOptionId("geocoder", feature, index),
+        locationSelected: () => setLocationSelected(feature)
+      };
+    });
     const {
       otherFeatures,
       stationFeatures,
       stopFeatures
     } = getFeaturesByCategoryWithLimit(
-      geocodedFeatures,
+      geocodedFeaturesWithId,
       suggestionCount,
       sortByDistance,
       preferredLayers
@@ -746,17 +772,16 @@ const LocationField = ({
       let element;
 
       const FeaturesElementProps = {
+        activeIndex,
+        addLocationSearch,
+        GeocodedOptionIconComponent,
+        geocoderConfig,
         headingType,
-        itemIndex,
+        indexedOptionLookup,
+        layerColorMap,
         operatorIconMap,
         setLocation,
-        addLocationSearch,
-        showSecondaryLabels,
-        locationSelectedLookup,
-        activeIndex,
-        GeocodedOptionIconComponent,
-        layerColorMap,
-        geocoderConfig
+        showSecondaryLabels
       };
       switch (result) {
         case GeocoderResultsConstants.OTHER:
@@ -825,6 +850,13 @@ const LocationField = ({
       return element;
     });
 
+    // Push the ids and handlers to the indexedOptionLookup in the correct order
+    featuresElementsArray?.forEach(category =>
+      category.props?.features?.forEach(feat => {
+        pushToIndexedOptions(feat.locationSelected, feat.id);
+      })
+    );
+
     // Iterate through the geocoder results
     menuItems = menuItems.concat(featuresElementsArray);
   }
@@ -860,21 +892,19 @@ const LocationField = ({
         };
 
         // Add to the selection handler lookup (for use in onKeyDown)
-        locationSelectedLookup[itemIndex] = locationSelected;
+        pushToIndexedOptions(locationSelected, stopId);
 
         // Create and return the option menu item
-        const option = (
+        return (
           <TransitStopOption
-            id={getOptionId(itemIndex)}
-            isActive={itemIndex === activeIndex}
-            key={optionKey++}
+            id={stopId}
+            isActive={indexedOptionLookup[activeIndex]?.id === stopId}
+            key={stopId}
             onClick={locationSelected}
             stop={stop}
             stopOptionIcon={stopOptionIcon}
           />
         );
-        itemIndex++;
-        return option;
       })
     );
   }
@@ -896,29 +926,30 @@ const LocationField = ({
 
     // Iterate through any saved locations
     menuItems = menuItems.concat(
-      sessionSearches.map(sessionLocation => {
+      sessionSearches.map((sessionLocation, index) => {
         // Create the location-selected handler
         const locationSelected = () => {
           setLocation(sessionLocation, "SESSION");
         };
 
+        const locationId = generateOptionId("recent", sessionLocation, index);
+
         // Add to the selection handler lookup (for use in onKeyDown)
-        locationSelectedLookup[itemIndex] = locationSelected;
+        pushToIndexedOptions(locationSelected, locationId);
+
         // Create and return the option menu item
-        const option = (
+        return (
           <Option
             icon={sessionOptionIcon}
-            id={getOptionId(itemIndex)}
-            isActive={itemIndex === activeIndex}
-            key={optionKey++}
+            id={locationId}
+            isActive={indexedOptionLookup[activeIndex]?.id === locationId}
+            key={locationId}
             onClick={locationSelected}
             subTitle={sessionLocation.secondary || ""}
             // just use the name if there is no main/secondary field
             title={sessionLocation.main || sessionLocation.name}
           />
         );
-        itemIndex++;
-        return option;
       })
     );
   }
@@ -938,13 +969,13 @@ const LocationField = ({
 
     // Iterate through any saved locations
     menuItems = menuItems.concat(
-      userLocationRenderData.map(userLocation =>
+      userLocationRenderData.map((userLocation, index) =>
         makeUserOption(
           userLocation,
-          itemIndex++,
-          optionKey++,
-          itemIndex === activeIndex,
-          locationSelectedLookup
+          generateOptionId("user-saved", userLocation, index),
+          activeIndex,
+          pushToIndexedOptions,
+          indexedOptionLookup
         )
       )
     );
@@ -983,8 +1014,10 @@ const LocationField = ({
     statusMessages.push(optionTitle);
   }
 
+  const optionId = `current-position`;
+
   // Add to the selection handler lookup (for use in onKeyDown)
-  locationSelectedLookup[itemIndex] = locationSelected;
+  pushToIndexedOptions(locationSelected, optionId);
 
   if (!suppressNearby) {
     // Create and add the option item to the menu items array
@@ -992,14 +1025,13 @@ const LocationField = ({
       <Option
         disabled={positionUnavailable}
         icon={optionIcon}
-        id={getOptionId(itemIndex)}
-        isActive={itemIndex === activeIndex}
-        key={optionKey++}
+        id={optionId}
+        isActive={indexedOptionLookup[activeIndex]?.id === optionId}
+        key={optionId}
         onClick={locationSelected}
         title={optionTitle}
       />
     );
-    if (!positionUnavailable) itemIndex++;
   }
   if (message && !message.includes("AbortError")) {
     if (geocodedFeatures.length === 0) {
@@ -1009,14 +1041,14 @@ const LocationField = ({
         <ExclamationCircle size={ICON_SIZE} />
       );
       menuItems.unshift(
-        <Option disabled icon={icon} key={optionKey++} title={message} />
+        <Option disabled icon={icon} key="abort-error" title={message} />
       );
     }
     statusMessages.push(message);
   }
 
   // Store the number of location-associated items for reference in the onKeyDown method
-  let menuItemCount = itemIndex;
+  let menuItemCount = indexedOptionLookup.length;
 
   /** the text input element * */
   // Use this text for aria-label below.
@@ -1031,7 +1063,7 @@ const LocationField = ({
   const textControl = (
     <S.Input
       aria-activedescendant={
-        activeIndex !== null ? getOptionId(activeIndex) : null
+        activeIndex !== null ? indexedOptionLookup[activeIndex]?.id : null
       }
       aria-autocomplete="list"
       aria-controls={listBoxId}
@@ -1062,6 +1094,7 @@ const LocationField = ({
           id: "otpUi.LocationField.clearLocation"
         })}
         onClick={onClearButtonClick}
+        type="button"
       >
         {clearButtonIcon}
       </S.ClearButton>
@@ -1082,6 +1115,7 @@ const LocationField = ({
         })}
         onClick={onDropdownToggle}
         tabIndex={-1}
+        type="button"
       >
         <LocationIconComponent locationType={locationType} />
       </S.DropdownButton>

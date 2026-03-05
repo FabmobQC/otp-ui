@@ -1,6 +1,6 @@
 {
   "name": "@opentripplanner/route-viewer-overlay",
-  "version": "3.0.1",
+  "version": "5.0.0",
   "description": "A map overlay to show a transit route",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -19,17 +19,17 @@
     "url": "https://github.com/opentripplanner/otp-ui/issues"
   },
   "dependencies": {
-    "@mapbox/polyline": "^1.1.0",
-    "@opentripplanner/base-map": "^4.0.0",
-    "@opentripplanner/core-utils": "^12.0.0",
+    "@mapbox/polyline": "catalog:",
+    "@opentripplanner/base-map": "workspace:*",
+    "@opentripplanner/core-utils": "workspace:*",
     "point-in-polygon": "^1.1.0"
   },
   "devDependencies": {
-    "@opentripplanner/types": "^6.5.2",
+    "@opentripplanner/types": "workspace:*",
     "point-in-polygon": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "catalog:"
   },
   "gitHead": "0af1b7cda60bd4252b219dcf893e01c2acb2ed5d"
 }

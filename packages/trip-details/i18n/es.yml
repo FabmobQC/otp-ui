@@ -1,12 +1,5 @@
 otpUi:
   TripDetails:
-    FareTable:
-      cash: Efectivo
-      electronic: Electrónico
-      regular: Adulto
-      senior: Major edad
-      special: Especial
-      youth: Juventud
     co2: "CO₂ emitido: <strong>{co2}</strong>"
     co2description: >-
       La intensidad de CO₂ se calcula multiplicando la distancia de cada tramo
@@ -28,6 +21,7 @@ otpUi:
       {# minuto} other {# minutos}}</strong> en bicicleta.
     title: Detalles del viaje
     tncFare: "{companies} Tarifa: <strong>{minTNCFare} - {maxTNCFare}</strong>"
+    total: Total
     transferDiscountExplanation: Se aplica un descuento de transferencia de {transferAmount}
     transitFare: Tarifa de tránsito
     transitFareEntry: "{name} : <strong>{value}</strong>"

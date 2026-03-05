@@ -1,7 +1,4 @@
-import {
-  getDisplayedStopId,
-  getLegRouteShortName
-} from "@opentripplanner/core-utils/lib/itinerary";
+import coreUtils from "@opentripplanner/core-utils";
 import { Defaults } from "@opentripplanner/itinerary-body";
 import { GradationMap, Leg, LegIconComponent } from "@opentripplanner/types";
 import React, { ReactElement } from "react";
@@ -10,6 +7,8 @@ import { FormattedMessage } from "react-intl";
 import AccessibilityAnnotation from "./accessibility-annotation";
 import * as S from "./styled";
 import { defaultMessages, strongText } from "./util";
+
+const { getDisplayedStopCode, getLegRouteShortName } = coreUtils.itinerary;
 
 interface Props {
   accessibilityScoreGradationMap?: GradationMap;
@@ -24,8 +23,12 @@ export default function TransitLeg({
   LegIcon,
   interlineFollows
 }: Props): ReactElement {
-  const stopIdFrom = getDisplayedStopId(leg.from);
-  const stopIdTo = getDisplayedStopId(leg.to);
+  // TODO: some mocks in itinerary-body have legs with null values for from/to.stop
+  const stopCodeFrom = getDisplayedStopCode(leg.from.stop ?? leg.from);
+  const stopCodeTo = getDisplayedStopCode(leg.to.stop ?? leg.to);
+
+  const stopCodeFromPart = stopCodeFrom ? ` (${stopCodeFrom})` : "";
+  const stopCodeToPart = stopCodeTo ? ` (${stopCodeTo})` : "";
 
   // TODO: core-utils needs some larger-scale type fixes
   // null is an object, so we need to redefine it as undefined to prevent
@@ -48,14 +51,14 @@ export default function TransitLeg({
       id="otpUi.PrintableItinerary.TransitLeg.alight"
       values={{
         place: leg.to.name,
-        stopId: stopIdTo,
+        stopCodePart: stopCodeToPart,
         strong: strongText,
         time: leg.endTime
       }}
     />
   );
 
-  // Handle case of transit leg interlined w/ previous
+  // Handle case of transit leg interlined w/ previous.
   if (leg.interlineWithPreviousLeg) {
     return (
       <S.CollapsedTop>
@@ -100,7 +103,7 @@ export default function TransitLeg({
               id="otpUi.PrintableItinerary.TransitLeg.board"
               values={{
                 place: leg.from.name,
-                stopId: stopIdFrom,
+                stopCodePart: stopCodeFromPart,
                 strong: strongText,
                 time: leg.startTime
               }}

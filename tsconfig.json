@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "target": "es5",
     "sourceMap": true,
     "declaration": true,
@@ -9,7 +10,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "noEmit": false
+    "noEmit": false,
+    "emitDeclarationOnly": true
   },
   "exclude": [
     "**/*.test.ts",

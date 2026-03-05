@@ -42,6 +42,7 @@ interface Props {
   legDestination: string;
   LegIcon: LegIconComponent;
   legIndex: number;
+  nextLegInterlines?: boolean;
   RouteDescription: FunctionComponent<RouteDescriptionProps>;
   RouteDescriptionFooter: FunctionComponent<RouteDescriptionFooterProps>;
   setActiveLeg: SetActiveLegFunction;
@@ -69,24 +70,47 @@ function getFlexMessageValues(info: FlexBookingInfo) {
   // There used to be a variable `hasLeadTime` here. This should be brought back
   // if the leadTime check is ever to be more than just checking the value of
   // daysPrior (which can be done within react-intl)
-  const hasPhone = !!info?.contactInfo?.phoneNumber;
+  // This will allow for displaying how many _hours_ before a trip it must be booked
+
   const leadDays = info?.latestBookingTime?.daysPrior;
   const phoneNumber = info?.contactInfo?.phoneNumber;
-  return {
-    action: hasPhone ? (
+  const bookingUrl = info?.contactInfo?.bookingUrl;
+
+  let action = (
+    <FormattedMessage
+      defaultMessage={defaultMessages["otpUi.ItineraryBody.flexCallAhead"]}
+      description="For calling ahead."
+      id="otpUi.ItineraryBody.flexCallAhead"
+    />
+  );
+
+  if (phoneNumber) {
+    action = (
       <FormattedMessage
         defaultMessage={defaultMessages["otpUi.ItineraryBody.flexCallNumber"]}
         description="For calling a phone number."
         id="otpUi.ItineraryBody.flexCallNumber"
         values={{ phoneNumber }}
       />
-    ) : (
+    );
+  }
+  if (bookingUrl) {
+    action = (
       <FormattedMessage
-        defaultMessage={defaultMessages["otpUi.ItineraryBody.flexCallAhead"]}
-        description="For calling ahead."
-        id="otpUi.ItineraryBody.flexCallAhead"
+        defaultMessage={defaultMessages["otpUi.ItineraryBody.flexBookingUrl"]}
+        description="For booking via phone number."
+        id="otpUi.ItineraryBody.flexBookingUrl"
+        values={{
+          bookingUrl,
+          // eslint-disable-next-line react/display-name
+          link: contents => <a href={bookingUrl}>{contents}</a>
+        }}
       />
-    ),
+    );
+  }
+
+  return {
+    action,
     advanceNotice:
       leadDays > 0 ? (
         <FormattedMessage
@@ -137,6 +161,7 @@ class TransitLegBody extends Component<Props, State> {
       leg,
       legDestination,
       LegIcon,
+      nextLegInterlines,
       RouteDescription,
       RouteDescriptionFooter,
       setViewedTrip,
@@ -182,6 +207,20 @@ class TransitLegBody extends Component<Props, State> {
         defaultFareSelector.riderCategoryId
       );
 
+    const alertLabelContents = (
+      <>
+        <AlertToggleIcon />{" "}
+        <FormattedMessage
+          defaultMessage={defaultMessages["otpUi.TransitLegBody.alertsHeader"]}
+          description="Number of alerts header"
+          id="otpUi.TransitLegBody.alertsHeader"
+          values={{
+            alertCount: alerts?.length
+          }}
+        />
+      </>
+    );
+
     return (
       <>
         {TransitLegSubheader && <TransitLegSubheader leg={leg} />}
@@ -207,17 +246,20 @@ class TransitLegBody extends Component<Props, State> {
                 />
                 <S.InvisibleAdditionalDetails>
                   {" - "}
-                  <FormattedMessage
-                    // TODO: Accommodate interline itineraries with "Stay on board" instructions.
-                    defaultMessage={
-                      defaultMessages["otpUi.TransitLegBody.disembarkAt"]
-                    }
-                    description="Prompt to exit a transit vehicle."
-                    id="otpUi.TransitLegBody.disembarkAt"
-                    values={{
-                      legDestination
-                    }}
-                  />
+                  {nextLegInterlines ? (
+                    legDestination
+                  ) : (
+                    <FormattedMessage
+                      defaultMessage={
+                        defaultMessages["otpUi.TransitLegBody.disembarkAt"]
+                      }
+                      description="Prompt to exit a transit vehicle."
+                      id="otpUi.TransitLegBody.disembarkAt"
+                      values={{
+                        legDestination
+                      }}
+                    />
+                  )}
                 </S.InvisibleAdditionalDetails>
               </span>
               <S.LegClickableButton
@@ -293,40 +335,30 @@ class TransitLegBody extends Component<Props, State> {
               </S.CallAheadWarning>
             )}
             {/* Alerts toggle */}
-            {alerts?.length > 0 && (
-              <S.TransitAlertToggle
-                className="alert-toggle"
-                isButton={!shouldOnlyShowAlertsExpanded}
-                as={shouldOnlyShowAlertsExpanded && "div"}
-                onClick={this.onToggleAlertsClick}
-              >
-                <AlertToggleIcon />{" "}
-                <FormattedMessage
-                  defaultMessage={
-                    defaultMessages["otpUi.TransitLegBody.alertsHeader"]
-                  }
-                  description="Number of alerts header"
-                  id="otpUi.TransitLegBody.alertsHeader"
-                  values={{
-                    alertCount: alerts.length
-                  }}
-                />
-                {!shouldOnlyShowAlertsExpanded && (
-                  <>
-                    <S.CaretToggle expanded={alertsExpanded} />
-                    <S.InvisibleAdditionalDetails>
-                      <FormattedMessage
-                        defaultMessage={
-                          defaultMessages["otpUi.TransitLegBody.expandDetails"]
-                        }
-                        description="Screen reader text added to expand steps"
-                        id="otpUi.TransitLegBody.expandDetails"
-                      />
-                    </S.InvisibleAdditionalDetails>
-                  </>
-                )}
-              </S.TransitAlertToggle>
-            )}
+            {alerts?.length > 0 &&
+              (shouldOnlyShowAlertsExpanded ? (
+                <S.TransitAlertDiv className="alert-toggle">
+                  {alertLabelContents}
+                </S.TransitAlertDiv>
+              ) : (
+                <S.TransitAlertToggle
+                  aria-expanded={expandAlerts}
+                  className="alert-toggle"
+                  onClick={this.onToggleAlertsClick}
+                >
+                  {alertLabelContents}
+                  <S.CaretToggle expanded={alertsExpanded} />
+                  <S.InvisibleAdditionalDetails>
+                    <FormattedMessage
+                      defaultMessage={
+                        defaultMessages["otpUi.TransitLegBody.expandDetails"]
+                      }
+                      description="Screen reader text added to expand steps"
+                      id="otpUi.TransitLegBody.expandDetails"
+                    />
+                  </S.InvisibleAdditionalDetails>
+                </S.TransitAlertToggle>
+              ))}
 
             {/* The Alerts body, if visible */}
             <AnimateHeight duration={500} height={expandAlerts ? "auto" : 0}>

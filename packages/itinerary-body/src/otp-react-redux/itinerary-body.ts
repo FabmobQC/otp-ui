@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
+import colors from "@opentripplanner/building-blocks";
 import ItineraryBody from "../ItineraryBody";
 import * as ItineraryBodyClasses from "../styled";
+
+const { blue, grey } = colors;
 
 const StyledItineraryBody = styled(ItineraryBody)`
   font-size: 16px;
@@ -11,13 +14,8 @@ const StyledItineraryBody = styled(ItineraryBody)`
     font-family: Hind, sans-serif;
   }
 
-  ${ItineraryBodyClasses.InterlineDot} {
-    margin-left: -18px;
-    margin-right: 3px;
-  }
-
   ${ItineraryBodyClasses.LegDescriptionRouteShortName} {
-    background-color: rgb(15, 106, 172);
+    background-color: ${blue[700]};
     border-color: white;
     border-image: initial;
     border-radius: 12px;
@@ -68,7 +66,7 @@ const StyledItineraryBody = styled(ItineraryBody)`
 
   ${ItineraryBodyClasses.TimeColumn} {
     grid-area: time;
-    color: #676767;
+    color: ${grey[700]};
     display: table-cell;
     font-size: 14px;
     padding-right: 4px;

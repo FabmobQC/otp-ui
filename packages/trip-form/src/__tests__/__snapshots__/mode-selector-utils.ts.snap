@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`mode selector utils check add settings to button should add applicable mode settings to the buttons 1`] = `
+[
+  {
+    "Icon": [Function],
+    "enabled": true,
+    "iconName": "transit icon",
+    "key": "TRANSIT",
+    "label": "Transit",
+    "modeSettings": [
+      {
+        "applicableMode": "TRANSIT",
+        "default": false,
+        "key": "wheelchair",
+        "label": "Use Accessible Routing",
+        "type": "CHECKBOX",
+      },
+      {
+        "addTransportMode": {
+          "mode": "BUS",
+        },
+        "applicableMode": "TRANSIT",
+        "default": true,
+        "key": "enableHovercraft",
+        "label": "Bus",
+        "overrideMode": "HOVERCRAFT",
+        "type": "SUBMODE",
+      },
+    ],
+    "modes": [
+      {
+        "mode": "BUS",
+      },
+      {
+        "mode": "RAIL",
+      },
+    ],
+  },
+  {
+    "Icon": [Function],
+    "enabled": true,
+    "iconName": "walking icon",
+    "key": "WALK",
+    "label": "Walking",
+    "modeSettings": [
+      {
+        "applicableMode": "WALK",
+        "default": 2,
+        "high": 5,
+        "key": "walkReluctance",
+        "label": "Walk Reluctance",
+        "labelHigh": "More Transit",
+        "labelLow": "More Walking",
+        "low": 0,
+        "step": 0.1,
+        "type": "SLIDER",
+      },
+    ],
+    "modes": [
+      {
+        "mode": "WALK",
+      },
+    ],
+  },
+  {
+    "Icon": [Function],
+    "enabled": true,
+    "iconName": "biking icon",
+    "key": "BIKE",
+    "label": "Bike",
+    "modeSettings": [
+      {
+        "applicableMode": "BICYCLE",
+        "default": 2,
+        "high": 5,
+        "key": "bikeReluctance",
+        "label": "Bike Reluctance",
+        "labelHigh": "More Transit",
+        "labelLow": "More Biking",
+        "low": 0,
+        "step": 0.1,
+        "type": "SLIDER",
+      },
+      {
+        "addTransportMode": {
+          "mode": "BICYCLE",
+          "qualifier": "RENT",
+        },
+        "applicableMode": "BICYCLE",
+        "default": true,
+        "key": "allowBikeRental",
+        "label": "Enable Bike Rental",
+        "type": "CHECKBOX",
+      },
+    ],
+    "modes": [
+      {
+        "mode": "BICYCLE",
+      },
+    ],
+  },
+]
+`;
+
+exports[`mode selector utils extract mode setting defaults to object should extract defaults from the mode settings 1`] = `
+{
+  "allowBikeRental": true,
+  "bikeReluctance": 2,
+  "carReluctance": 3,
+  "enableHovercraft": true,
+  "walkReluctance": 2,
+  "wheelchair": false,
+}
+`;
+
+exports[`mode selector utils populate mode settings with values should populate settings with values 1`] = `
+[
+  {
+    "applicableMode": "CAR",
+    "default": 3,
+    "high": 5,
+    "key": "carReluctance",
+    "label": "Car Reluctance",
+    "labelHigh": "More Transit",
+    "labelLow": "More Driving",
+    "low": 0,
+    "step": 0.1,
+    "type": "SLIDER",
+    "value": 3,
+  },
+  {
+    "applicableMode": "BICYCLE",
+    "default": 2,
+    "high": 5,
+    "key": "bikeReluctance",
+    "label": "Bike Reluctance",
+    "labelHigh": "More Transit",
+    "labelLow": "More Biking",
+    "low": 0,
+    "step": 0.1,
+    "type": "SLIDER",
+    "value": 2,
+  },
+  {
+    "applicableMode": "WALK",
+    "default": 2,
+    "high": 5,
+    "key": "walkReluctance",
+    "label": "Walk Reluctance",
+    "labelHigh": "More Transit",
+    "labelLow": "More Walking",
+    "low": 0,
+    "step": 0.1,
+    "type": "SLIDER",
+    "value": 2,
+  },
+  {
+    "addTransportMode": {
+      "mode": "BICYCLE",
+      "qualifier": "RENT",
+    },
+    "applicableMode": "BICYCLE",
+    "default": true,
+    "key": "allowBikeRental",
+    "label": "Enable Bike Rental",
+    "type": "CHECKBOX",
+    "value": true,
+  },
+  {
+    "applicableMode": "TRANSIT",
+    "default": false,
+    "key": "wheelchair",
+    "label": "Use Accessible Routing",
+    "type": "CHECKBOX",
+    "value": false,
+  },
+  {
+    "addTransportMode": {
+      "mode": "BUS",
+    },
+    "applicableMode": "TRANSIT",
+    "default": true,
+    "key": "enableHovercraft",
+    "label": "Bus",
+    "overrideMode": "HOVERCRAFT",
+    "type": "SUBMODE",
+    "value": false,
+  },
+]
+`;

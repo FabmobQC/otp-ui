@@ -58,6 +58,7 @@ otpUi:
       carHail: Ngồi trên xe
       escooter: Đi xe tay ga điện
       walk: Đi bộ
+    transfer: Chuyển{duration, select, undefined {} other {, đợi {duration}}}
     unnamedPath: Con đường không tên
     unnamedRoad: Con đường không tên
     vehicleTitle: "{vehicleType} {company}"
@@ -92,8 +93,11 @@ otpUi:
     viewOnMap: Xem trên bản đồ
   TransitLegBody:
     AlertsBody:
+      alertLinkText: Xem cảnh báo trên trang web {agency}
       effectiveDate: Có hiệu lực kể từ {dateTime, date, long}
       effectiveTimeAndDate: Có hiệu lực kể từ {dateTime, time, short}, {day}
+      linkOpensNewWindow: (Mở cửa sổ mới)
+      noAgencyAlertLinkText: Xem cảnh báo trên trang web cơ quan
       today: Hôm nay
       tomorrow: Ngày mai
       yesterday: Hôm qua

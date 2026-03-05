@@ -38,6 +38,9 @@ otpUi:
     use: 이용
     useCompanies: 회사 이용
     walkOnly: 도보 전용
+  TripOptions:
+    openApp: 앱 열기
+    transitOnly: 대중교통으로 이동
   queryParameters:
     bikeSpeed: 자전거 속도
     distanceInMiles: |

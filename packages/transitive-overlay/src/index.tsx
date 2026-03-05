@@ -1,7 +1,7 @@
-import { SymbolLayout } from "mapbox-gl";
+import { FilterSpecification, SymbolLayerSpecification } from "maplibre-gl";
 import { util } from "@opentripplanner/base-map";
 import React, { useEffect } from "react";
-import { Layer, MapRef, Source, useMap } from "react-map-gl";
+import { Layer, MapRef, Source, useMap } from "react-map-gl/maplibre";
 import polyline from "@mapbox/polyline";
 import {
   Leg,
@@ -10,22 +10,82 @@ import {
   TransitivePattern,
   TransitivePlace
 } from "@opentripplanner/types";
+import colors from "@opentripplanner/building-blocks";
+
 import bbox from "@turf/bbox";
 
 import { getRouteLayerLayout, patternToRouteFeature } from "./route-layers";
 import { drawArc, getFromToAnchors, itineraryToTransitive } from "./util";
 import routeArrow from "./images/route_arrow.png";
+import capsule1 from "./images/01.png";
+import capsule3 from "./images/03.png";
+import capsule4 from "./images/04.png";
+import capsule5 from "./images/05.png";
+import capsule6 from "./images/06.png";
+import capsule7 from "./images/07.png";
+import capsule8 from "./images/08.png";
+import capsule9 from "./images/09.png";
+import capsule10 from "./images/10.png";
+import capsule11 from "./images/11.png";
+import capsule12 from "./images/12.png";
+import capsule13 from "./images/13.png";
+import capsule14 from "./images/14.png";
+import capsule15 from "./images/15.png";
+import capsule16 from "./images/16.png";
+import capsule17 from "./images/17.png";
+import rectangle from "./images/square.png";
+
+const CAPSULES = {
+  3: capsule3,
+  4: capsule4,
+  5: capsule5,
+  6: capsule6,
+  7: capsule7,
+  8: capsule8,
+  9: capsule9,
+  10: capsule10,
+  11: capsule11,
+  12: capsule12,
+  13: capsule13,
+  14: capsule14,
+  15: capsule15,
+  16: capsule16,
+  17: capsule17
+};
+
+// These are based on the sprites in the image folder
+const WIDTH_IMAGE_SIZES = {
+  6: 1283,
+  7: 1450,
+  8: 1617,
+  9: 1783,
+  10: 1950,
+  11: 2117,
+  12: 2283,
+  13: 2450,
+  14: 2617,
+  15: 2783,
+  16: 2950,
+  17: 3117
+};
+const HEIGHT_IMAGE_SIZE = 533;
 
 export { itineraryToTransitive };
 
+const { blue, grey, red } = colors;
+
+// These color variables correspond to those in the itinerary-body package
+// TODO: Move these into building-blocks
+const MICROMOBILITY_ORANGE = "#f5a729";
+
 // TODO: BETTER COLORS
 const modeColorMap = {
-  CAR: "#888",
-  BICYCLE: "#f00",
-  SCOOTER: "#f5a729",
-  MICROMOBILITY: "#f5a729",
-  MICROMOBILITY_RENT: "#f5a729",
-  WALK: "#86cdf9"
+  CAR: grey[500],
+  BICYCLE: red[600],
+  SCOOTER: MICROMOBILITY_ORANGE,
+  MICROMOBILITY: MICROMOBILITY_ORANGE,
+  MICROMOBILITY_RENT: MICROMOBILITY_ORANGE,
+  WALK: blue[400]
 };
 
 /**
@@ -40,7 +100,7 @@ const defaultTextPaintParams = {
 /**
  * Common text settings.
  */
-const commonTextLayoutParams: SymbolLayout = {
+const commonTextLayoutParams: SymbolLayerSpecification["layout"] = {
   "symbol-placement": "point",
   "text-allow-overlap": false,
   "text-field": ["get", "name"],
@@ -52,7 +112,7 @@ const commonTextLayoutParams: SymbolLayout = {
 /**
  * Text size and layout that lets maplibre relocate text space permitting.
  */
-const defaultTextLayoutParams: SymbolLayout = {
+const defaultTextLayoutParams: SymbolLayerSpecification["layout"] = {
   ...commonTextLayoutParams,
   "text-variable-anchor": [
     "left",
@@ -69,16 +129,16 @@ const defaultTextLayoutParams: SymbolLayout = {
 /**
  * Default text + bold default fonts
  */
-const defaultBoldTextLayoutParams = {
+const defaultBoldTextLayoutParams: SymbolLayerSpecification["layout"] = {
   ...commonTextLayoutParams,
   // FIXME: find a better way to set a bold font
   "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
   "text-overlap": "never"
 };
 
-const routeFilter = ["==", "type", "route"];
-const stopFilter = ["==", "type", "stop"];
-const accessLegFilter = [
+const routeFilter: FilterSpecification = ["==", "type", "route"];
+const stopFilter: FilterSpecification = ["==", "type", "stop"];
+const accessLegFilter: FilterSpecification = [
   "match",
   ["get", "type"],
   ["BICYCLE", "SCOOTER", "MICROMOBILITY", "MICROMOBILITY_RENT", "CAR"],
@@ -97,20 +157,23 @@ type Props = {
 type MapImage = {
   id: string;
   url: string;
+  options: { sdf?: boolean; content?: [number, number, number, number] };
 };
 
 const loadImages = (map: MapRef, images: MapImage[]) => {
   images.forEach(img => {
-    map.loadImage(img.url, (error, image) => {
-      if (error) {
-        // eslint-disable-next-line no-console
-        console.error(`Error loading image ${img.id}:`, error);
-        return;
-      }
-      if (!map.hasImage(img.id)) {
-        map.addImage(img.id, image, { sdf: true });
-      }
-    });
+    if (!map.hasImage(img.id)) {
+      // Only load if the image hasn't already been added
+      map
+        .loadImage(img.url)
+        .then(response => {
+          map.addImage(img.id, response.data, img.options);
+        })
+        .catch(error => {
+          // eslint-disable-next-line no-console
+          console.error(`Error loading image ${img.id}:`, error);
+        });
+    }
   });
 };
 
@@ -129,27 +192,95 @@ const TransitiveCanvasOverlay = ({
   if (showRouteArrows) {
     mapImages.push({
       id: "arrow-icon",
-      url: routeArrow
+      url: routeArrow,
+      options: { sdf: true }
     });
   }
 
+  function generateCapsulePadding(
+    width: number
+  ): [number, number, number, number] {
+    // Low widths have no padding
+    if (!WIDTH_IMAGE_SIZES[width]) {
+      return undefined;
+    }
+
+    // This could be more efficient, but this makes it very clear what is happening.
+    // Higher widths require more padding
+    let topPad = 0;
+    if (width === 6) {
+      topPad = 100;
+    }
+
+    if (width > 6) {
+      topPad = 150;
+    }
+
+    if (width > 12) {
+      topPad = 175;
+    }
+
+    // Each image has same height
+    return [topPad, 0, WIDTH_IMAGE_SIZES[width] - topPad, HEIGHT_IMAGE_SIZE];
+  }
+
+  mapImages.push({
+    id: "1",
+    url: capsule1,
+    options: {
+      // These paddings are specifically set so that the circle appears circular
+      // despite non-circular padding
+      content: [0, 15, 500, 485],
+      sdf: true
+    }
+  });
+  mapImages.push({
+    id: "2",
+    url: capsule1,
+    options: {
+      // These paddings are specifically set so that the circle appears circular
+      // despite non-circular padding
+      content: [0, 40, 500, 460],
+      sdf: true
+    }
+  });
+
+  // Generate each capsule image from 3 - 17
+  for (let i = 3; i < 18; i++) {
+    mapImages.push({
+      id: `${i}`,
+      url: CAPSULES[i],
+      options: {
+        content: generateCapsulePadding(i),
+        sdf: true
+      }
+    });
+  }
+
+  mapImages.push({
+    id: "rect",
+    url: rectangle,
+    options: {
+      sdf: true
+    }
+  });
+
   useEffect(() => {
     loadImages(map, mapImages);
-  }, [map, mapImages]);
+  }, []);
 
   const geojson: GeoJSON.FeatureCollection<
     GeoJSON.Geometry,
     Record<string, unknown>
   > = {
     type: "FeatureCollection",
-    // @ts-expect-error TODO: fix the type above for geojson
     features: transitiveData
       ? [
           ...(transitiveData.places || []).flatMap((place: TransitivePlace) => {
             return {
               type: "Feature",
               properties: {
-                color: modeColorMap[place.type] || "#008",
+                color: modeColorMap[place.type] || blue[900],
                 name: place.place_name,
                 type: place.type || "place"
               },
@@ -157,7 +288,7 @@ const TransitiveCanvasOverlay = ({
                 type: "Point",
                 coordinates: [place.place_lon, place.place_lat]
               }
-            };
+            } as GeoJSON.Feature;
           }),
           ...(transitiveData.journeys || []).flatMap(
             (journey: TransitiveJourney) =>
@@ -183,11 +314,11 @@ const TransitiveCanvasOverlay = ({
                         color:
                           accessLegColorOverride ||
                           modeColorMap[segment.type] ||
-                          "#008",
+                          blue[900],
                         mode: segment.type
                       },
                       geometry: segment.arc ? drawArc(straight) : straight
-                    };
+                    } as GeoJSON.Feature;
                   });
                 })
           ),
@@ -211,14 +342,17 @@ const TransitiveCanvasOverlay = ({
               // pStop (from pattern.stops) only has an id (and sometimes line geometry)
               transitiveData.stops.find(stop => stop.stop_id === pStop.stop_id)
             )
-            .map(stop => ({
-              type: "Feature",
-              properties: { name: stop.stop_name, type: "stop" },
-              geometry: {
-                type: "Point",
-                coordinates: [stop.stop_lon, stop.stop_lat]
-              }
-            })),
+            .map(
+              stop =>
+                ({
+                  type: "Feature",
+                  properties: { name: stop.stop_name, type: "stop" },
+                  geometry: {
+                    type: "Point",
+                    coordinates: [stop.stop_lon, stop.stop_lat]
+                  }
+                } as GeoJSON.Feature)
+            ),
           ...(
             transitiveData.patterns || []
           ).flatMap((pattern: TransitivePattern) =>
@@ -374,23 +508,12 @@ const TransitiveCanvasOverlay = ({
         type="symbol"
       />
       <Layer
-        // Render a solid background of fixed height using the uppercase route name.
-        filter={routeFilter}
-        id="routes-labels-background"
-        layout={getRouteLayerLayout("nameUpper")}
-        paint={{
-          "text-color": ["get", "color"],
-          "text-halo-color": ["get", "color"],
-          "text-halo-width": 4 // Max value is 1/4 of text size per maplibre docs.
-        }}
-        type="symbol"
-      />
-      <Layer
         // This layer renders transit route names (foreground).
         filter={routeFilter}
         id="routes-labels"
         layout={getRouteLayerLayout("name")}
         paint={{
+          "icon-color": ["get", "color"],
           "text-color": ["get", "textColor"]
         }}
         type="symbol"
@@ -414,7 +537,7 @@ const TransitiveCanvasOverlay = ({
         }}
         paint={{
           ...defaultTextPaintParams,
-          "text-color": "#910818"
+          "text-color": red[900]
         }}
         type="symbol"
       />
