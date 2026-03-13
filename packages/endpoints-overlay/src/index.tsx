@@ -177,3 +177,9 @@ export default EndpointsOverlay;
 
 // Rename styled components for export.
 export { S as Styled };
+
+// Fabmob: Endpoint could be imported by otp-react-redux from '@opentripplanner/endpoints-overlay/lib/endpoint'
+// It actually used to work fine, until otp-react-redux switched to Vite.
+// It seems in that case Vite would create two instances of maplibre-gl,
+// and Endpoint would end up trying to use a React context that is not instantiated, which cause a crash.
+export { Endpoint };
