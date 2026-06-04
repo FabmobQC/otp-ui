@@ -133,9 +133,7 @@ export default function PlaceRow({
       </S.LineColumn>
       <S.PlaceHeader>
         <S.PlaceName aria-hidden className="place-row-place-name">
-          {(!followsStopover || isDestination) && (
-            <PlaceName config={config} interline={interline} place={place} />
-          )}
+          {(!followsStopover || isDestination) && placeName}
         </S.PlaceName>
       </S.PlaceHeader>
       <S.TimeColumn>
