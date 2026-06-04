@@ -1,6 +1,11 @@
 import coreUtils from "@opentripplanner/core-utils";
 import { Defaults } from "@opentripplanner/itinerary-body";
-import { GradationMap, Leg, LegIconComponent } from "@opentripplanner/types";
+import {
+  GradationMap,
+  Leg,
+  LegIconComponent,
+  LegHeadingProp
+} from "@opentripplanner/types";
 import React, { ReactElement } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -10,7 +15,7 @@ import { defaultMessages, strongText } from "./util";
 
 const { getDisplayedStopCode, getLegRouteShortName } = coreUtils.itinerary;
 
-interface Props {
+interface Props extends LegHeadingProp {
   accessibilityScoreGradationMap?: GradationMap;
   interlineFollows?: boolean;
   leg: Leg;
@@ -21,14 +26,12 @@ export default function TransitLeg({
   accessibilityScoreGradationMap,
   leg,
   LegIcon,
-  interlineFollows
+  interlineFollows,
+  headingAs
 }: Props): ReactElement {
   // TODO: some mocks in itinerary-body have legs with null values for from/to.stop
   const stopCodeFrom = getDisplayedStopCode(leg.from.stop ?? leg.from);
   const stopCodeTo = getDisplayedStopCode(leg.to.stop ?? leg.to);
-
-  const stopCodeFromPart = stopCodeFrom ? ` (${stopCodeFrom})` : "";
-  const stopCodeToPart = stopCodeTo ? ` (${stopCodeTo})` : "";
 
   // TODO: core-utils needs some larger-scale type fixes
   // null is an object, so we need to redefine it as undefined to prevent
@@ -51,7 +54,7 @@ export default function TransitLeg({
       id="otpUi.PrintableItinerary.TransitLeg.alight"
       values={{
         place: leg.to.name,
-        stopCodePart: stopCodeToPart,
+        stopCode: stopCodeTo,
         strong: strongText,
         time: leg.endTime
       }}
@@ -63,7 +66,7 @@ export default function TransitLeg({
     return (
       <S.CollapsedTop>
         <S.LegBody>
-          <S.LegHeader>
+          <S.LegHeader as={headingAs}>
             <FormattedMessage
               defaultMessage={
                 defaultMessages[
@@ -92,7 +95,7 @@ export default function TransitLeg({
         LegIcon={LegIcon}
       />
       <S.LegBody>
-        <S.LegHeader>{routeDescription}</S.LegHeader>
+        <S.LegHeader as={headingAs}>{routeDescription}</S.LegHeader>
         <S.LegDetails>
           <S.LegDetail>
             <FormattedMessage
@@ -103,7 +106,7 @@ export default function TransitLeg({
               id="otpUi.PrintableItinerary.TransitLeg.board"
               values={{
                 place: leg.from.name,
-                stopCodePart: stopCodeFromPart,
+                stopCode: stopCodeFrom,
                 strong: strongText,
                 time: leg.startTime
               }}

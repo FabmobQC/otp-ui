@@ -23,6 +23,7 @@ import {
   RouteDescriptionFooterProps,
   SetActiveLegFunction,
   SetViewedTripFunction,
+  TransitLegFooterProps,
   TransitLegSubheaderProps,
   TransitLegSummaryProps
 } from "../types";
@@ -51,6 +52,7 @@ interface Props {
   showAlertEffectiveDateTimeText?: boolean;
   showViewTripButton: boolean;
   timeZone: string;
+  TransitLegFooter?: FunctionComponent<TransitLegFooterProps>;
   TransitLegSubheader?: FunctionComponent<TransitLegSubheaderProps>;
   TransitLegSummary: FunctionComponent<TransitLegSummaryProps>;
   transitOperator?: TransitOperator;
@@ -169,6 +171,7 @@ class TransitLegBody extends Component<Props, State> {
       showAlertEffectiveDateTimeText,
       showViewTripButton,
       timeZone,
+      TransitLegFooter,
       TransitLegSubheader,
       TransitLegSummary,
       transitOperator
@@ -204,7 +207,8 @@ class TransitLegBody extends Component<Props, State> {
       coreUtils.itinerary.getLegCost(
         leg,
         defaultFareSelector.mediumId,
-        defaultFareSelector.riderCategoryId
+        defaultFareSelector.riderCategoryId,
+        []
       );
 
     const alertLabelContents = (
@@ -443,6 +447,7 @@ class TransitLegBody extends Component<Props, State> {
             )}
           </div>
         </S.LegBody>
+        {TransitLegFooter && <TransitLegFooter leg={leg} />}
       </>
     );
   }

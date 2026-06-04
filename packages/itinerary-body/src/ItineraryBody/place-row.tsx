@@ -26,7 +26,7 @@ function getLegPlaceName(
   const interline = !!(!isDestination && leg.interlineWithPreviousLeg);
   const place = isDestination ? { ...leg.to } : { ...leg.from };
   const placeName = (
-    <PlaceName config={config} interline={interline} place={place} />
+    <PlaceName config={config} interline={interline} leg={leg} place={place} />
   );
 
   return {
@@ -75,6 +75,8 @@ export default function PlaceRow({
   showViewTripButton,
   TimeColumnContent = DefaultTimeColumnContent,
   toRouteAbbreviation,
+  AccessLegFooter,
+  TransitLegFooter,
   TransitLegSubheader,
   TransitLegSummary
 }: PlaceRowProps): ReactElement {
@@ -94,7 +96,7 @@ export default function PlaceRow({
     placeName: nextPlaceName = undefined
   } = nextLeg ? getLegPlaceName(nextLeg, false, PlaceName, config) : {};
   const legDestination = nextPlaceName || (
-    <PlaceName config={config} place={leg.to} />
+    <PlaceName config={config} leg={leg} place={leg.to} />
   );
 
   // OTP2 marks both bikes and scooters as BIKESHARE in the vertextype
@@ -193,6 +195,7 @@ export default function PlaceRow({
               showAlertEffectiveDateTimeText={showAlertEffectiveDateTimeText}
               showViewTripButton={showViewTripButton}
               timeZone={config.homeTimezone}
+              TransitLegFooter={TransitLegFooter}
               TransitLegSubheader={TransitLegSubheader}
               TransitLegSummary={TransitLegSummary}
               transitOperator={coreUtils.route.getTransitOperatorFromLeg(
@@ -216,6 +219,7 @@ export default function PlaceRow({
               showApproximateTravelTime={showApproximateAccessLegTravelTimes}
               showElevationProfile={showElevationProfile}
               showLegIcon={showLegIcon}
+              AccessLegFooter={AccessLegFooter}
               TransitLegSubheader={TransitLegSubheader}
             />
           ))}
