@@ -22,7 +22,8 @@ otpUi:
       plural, one {# minuty} other {# minut}}</strong> na jeździe na rowerze.
     title: Szczegóły podróży
     tncFare: "{companies} Taryfa: <strong>{minTNCFare} - {maxTNCFare}</strong>"
-    transferDiscountExplanation: Zastosowano rabat transferowy w wysokości {transferAmount}
+    transferDiscountExplanation: Zastosowano rabat transferowy w wysokości 
+      {transferAmount}
     transitFare: Opłata za przejazd
     transitFareEntry: "{name}: <strong>{value}</strong>"
     tripIncludesFlex: Ta wycieczka obejmuje elastyczne trasy. {extraMessage}

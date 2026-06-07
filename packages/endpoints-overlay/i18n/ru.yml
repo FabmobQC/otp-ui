@@ -1,10 +1,10 @@
 otpUi:
   EndpointsOverlay:
-    clearLocation: Удалить как местоположение «{locationType}»
-    coordinates: "{lat, number, ::.00000}; {lon, number, ::.00000}"
-    forgetHome: Удалить местоположение дома
     forgetWork: Удалить местоположение работы
-    saveAsHome: Сохранить как местоположение дома
-    saveAsWork: Сохранить как местоположение работы
     swapLocation: Изменить на местоположение «{locationType}»
+    saveAsWork: Сохранить как местоположение работы
+    forgetHome: Удалить местоположение дома
+    clearLocation: Удалить как местоположение «{locationType}»
+    saveAsHome: Сохранить как местоположение дома
+    coordinates: '{lat, number, ::.00000}; {lon, number, ::.00000}'
     viewNearby: Смотреть поблизости

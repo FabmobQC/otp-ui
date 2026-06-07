@@ -38,9 +38,6 @@ otpUi:
     use: 使用
     useCompanies: 使用公司
     walkOnly: 仅步行
-  TripOptions:
-    openApp: 打开应用
-    transitOnly: 乘坐公共交通
   queryParameters:
     bikeSpeed: 自行车速度
     distanceInMiles: |
@@ -65,3 +62,6 @@ otpUi:
     watts250entryLevelEscooter: 入门级踏板车 (18 km/h)
     watts500robustEscooter: 坚固的电动滑板车 (30 km/h)
     wheelchair: 倾向于选择轮椅无障碍路线
+  TripOptions:
+    transitOnly: 乘坐公共交通
+    openApp: 打开应用

@@ -1,10 +1,10 @@
 otpUi:
   EndpointsOverlay:
-    clearLocation: Alisin ang lokasyon ng {locationType}
-    coordinates: "{lat, number, ::.00000}, {lon, number, ::.00000}"
-    forgetHome: Kalimutan ang tirahan
     forgetWork: Kalimutan ang trabaho
-    saveAsHome: I-save bilang tirahan
-    saveAsWork: I-save bilang trabaho
     swapLocation: Gawing lokasyon ng {locationType}
+    saveAsWork: I-save bilang trabaho
+    forgetHome: Kalimutan ang tirahan
+    clearLocation: Alisin ang lokasyon ng {locationType}
+    saveAsHome: I-save bilang tirahan
+    coordinates: '{lat, number, ::.00000}, {lon, number, ::.00000}'
     viewNearby: Tingnan ang malapit

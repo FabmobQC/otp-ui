@@ -38,9 +38,6 @@ otpUi:
     use: Sử dụng
     useCompanies: Sử dụng các công ty
     walkOnly: Chỉ đi bộ
-  TripOptions:
-    openApp: Mở ứng dụng
-    transitOnly: Đi bằng phương tiện giao thông công cộng
   queryParameters:
     bikeSpeed: Tốc độ xe đạp
     distanceInMiles: |
@@ -65,3 +62,6 @@ otpUi:
     watts250entryLevelEscooter: Xe tay ga dành cho người mới biết chạy (18 km/h)
     watts500robustEscooter: Xe tay ga điện công suất trung bình (30 km/h)
     wheelchair: Ưu tiên các tuyến đường mà xe lăn có thể đi được
+  TripOptions:
+    transitOnly: Đi bằng phương tiện giao thông công cộng
+    openApp: Mở ứng dụng
