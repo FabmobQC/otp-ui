@@ -5,7 +5,7 @@ import ItineraryBody from "..";
 import ItineraryBodyDefaultsWrapper from "./itinerary-body-defaults-wrapper";
 
 // import mock itinaries. These are all trip plan outputs from OTP.
-const walkTransitWalkItinerary = require("@opentripplanner/itinerary-body/src/__mocks__/itineraries/fabmob/bike-stop-bike.json");
+import walkTransitWalkItinerary from "../__mocks__/itineraries/walk-transit-walk.json";
 
 export default {
   title: "ItineraryBody/FabMob",
