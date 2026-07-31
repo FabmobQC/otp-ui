@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 
 import polyline from "@mapbox/polyline";
 import pointInPolygon from "point-in-polygon";
+import * as turf from "@turf/turf";
 import { objectExistsAndPopulated } from "./util";
 
 // Type guard to ensure Position has at least 2 coordinates as per RFC 7946
@@ -205,6 +206,149 @@ const removePointsInFlexZone = (stops: Stop[], points: [number, number][]) => {
  */
 const reduceBounds = (bnds, coord) => bnds.extend(coord);
 
+type FabMobRouteViewerOverlayFlexProps = {
+  routeData: RouteData;
+};
+
+// fabmob: Copy-pasted (and modified) from transitive-overlay to avoid coupling between modules.
+const drawArc = (orig, dest, bbox) => {
+  if (turf.distance(orig, dest) < 1) {
+    const width = turf.distance([bbox[0], bbox[1]], [bbox[2], bbox[1]]);
+    const height = turf.distance([bbox[0], bbox[1]], [bbox[0], bbox[3]]);
+    const ellipse = turf.ellipse(orig, width / 2, height / 2, {});
+    return turf.lineString(ellipse.geometry.coordinates[0]);
+    // alternative "inverted drop" shape
+    const line = turf.lineString([
+      orig.geometry.coordinates,
+      turf.destination(
+        turf.destination(orig, width / 2, 90).geometry.coordinates,
+        height / 2,
+        0
+      ).geometry.coordinates,
+      turf.destination(orig, height / 1, 0).geometry.coordinates,
+      turf.destination(
+        turf.destination(orig, width / 2, -90).geometry.coordinates,
+        height / 2,
+        0
+      ).geometry.coordinates,
+      orig.geometry.coordinates
+    ]);
+    return turf.bezierSpline(line);
+  }
+  const length = turf.distance(orig, dest, { units: "kilometers" });
+  const mp = turf.midpoint(orig, dest);
+  const center = turf.destination(mp, length, turf.bearing(orig, dest) - 90);
+
+  return turf.lineArc(
+    center,
+    turf.distance(center, orig),
+    turf.bearing(center, dest),
+    turf.bearing(center, orig),
+    { steps: 500 }
+  );
+};
+
+const FabMobRouteViewerOverlayFlex = (
+  props: FabMobRouteViewerOverlayFlexProps
+): JSX.Element => {
+  const { routeData } = props;
+  // fabmob: Not sure what is the type
+  const locationGroups: any[] = Object.values(routeData.patterns)[0]?.stops || [];
+
+  const groups = locationGroups.map(locationGroup => {
+      const stops = turf.featureCollection(
+        locationGroup?.geometries?.geoJson?.geometries?.map(turf.feature) ?? []
+      );
+      if (!stops.features.length) {
+        return undefined;
+      }
+      const center = turf.centerMean(stops);
+
+      const lines = turf.featureCollection(
+        stops.features.map(stop =>
+          turf.lineString([
+            // fabmob: not sure what is the type
+            (stop.geometry as any).coordinates,
+            center.geometry.coordinates
+          ])
+        )
+      );
+
+      return {
+        stops,
+        center,
+        lines
+      };
+    })
+    .filter(group => group !== undefined);
+
+  const arcs = turf.featureCollection(
+    groups
+      .slice(0, -1)
+      .map((group, i) =>
+        drawArc(group.center, groups[i + 1].center, turf.bbox(group.stops))
+      )
+  );
+
+  return (
+    <>
+      {groups.map((group, index) => (
+        <>
+          <Source id={`lines-${index}`} type="geojson" data={group.lines}>
+            <Layer
+              id={`lines-${index}`}
+              layout={{
+                "line-cap": "round",
+                "line-join": "round"
+              }}
+              paint={{
+                "line-color": "rgb(193, 91, 91)",
+                "line-opacity": 0.2,
+                "line-width": 1
+              }}
+              type="line"
+            />
+          </Source>
+          <Source
+            key={index}
+            id={`stops-${index}`}
+            type="geojson"
+            data={group.stops}
+          >
+            <Layer
+              id={`stops-${index}`}
+              minzoom={8}
+              paint={{
+                "circle-radius": 3,
+                "circle-color": "#e15c5c",
+                "circle-opacity": 0.9,
+                "circle-stroke-color": "#333",
+                "circle-stroke-width": 1
+              }}
+              type="circle"
+            />
+          </Source>
+        </>
+      ))}
+      <Source id="arcs" type="geojson" data={arcs}>
+        <Layer
+          id="arcs"
+          layout={{
+            "line-cap": "round",
+            "line-join": "round"
+          }}
+          paint={{
+            "line-color": "rgb(193, 91, 91)",
+            "line-opacity": 1,
+            "line-width": 3
+          }}
+          type="line"
+        />
+      </Source>
+    </>
+  );
+};
+
 /**
  * An overlay that will display all polylines of the patterns of a route.
  */
@@ -274,7 +418,8 @@ const RouteViewerOverlay = (props: Props): JSX.Element => {
         : pts;
 
       return clippedPts.map((pt: [number, number]) => [pt[1], pt[0]]);
-    });
+    })
+    .filter(segment => segment.length > 0);
 
   const geojson: GeoJSON.FeatureCollection = {
     type: "FeatureCollection",
@@ -302,7 +447,7 @@ const RouteViewerOverlay = (props: Props): JSX.Element => {
       />
     </Source>
   ) : (
-    <></>
+    <FabMobRouteViewerOverlayFlex routeData={routeData} />
   );
 };
 

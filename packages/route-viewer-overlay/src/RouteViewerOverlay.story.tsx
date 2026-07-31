@@ -8,6 +8,8 @@ import flexRouteData2 from "../__mocks__/mock-flex-route2.json";
 import flexRouteData3 from "../__mocks__/mock-flex-route3.json";
 import flexRouteData4 from "../__mocks__/mock-flex-route4.json";
 import flexRouteData5 from "../__mocks__/mock-flex-route5.json";
+import fabmobFlexRouteData1 from "../__mocks__/fabmob-mock-flex-route1.json";
+import fabmobFlexRouteData2 from "../__mocks__/fabmob-mock-flex-route2.json";
 
 import StopsOverlay from "../../stops-overlay/src";
 import { withMap } from "../../../.storybook/base-map-wrapper";
@@ -16,6 +18,9 @@ import RouteViewerOverlay from ".";
 const PORTLAND = [45.543092, -122.671202];
 const POWDER_SPRINGS = [33.8595, -84.67483];
 const zoom = 11;
+
+const CONWANSVILLE = [45.206125, -72.747562];
+const FARNHAM = [45.283171, -72.974683];
 
 // Hide some story args completely.
 const hiddenProp = {
@@ -190,4 +195,28 @@ export const FlexRouteUsingMultiPolygon2 = {
     ),
     routeData: flexRouteData5
   }
+};
+
+export const FabMobFlexRouteUsingStopGroups = {
+  render: Template,
+  args: {
+    clipToPatternStops: true,
+    routeData: fabmobFlexRouteData1
+  },
+  argTypes: {
+    clipToPatternStops: { control: "boolean" }
+  },
+  decorators: [withMap(CONWANSVILLE, zoom)]
+};
+
+export const FabMobFlexRouteUsingSingleStopGroup = {
+  render: Template,
+  args: {
+    clipToPatternStops: true,
+    routeData: fabmobFlexRouteData2
+  },
+  argTypes: {
+    clipToPatternStops: { control: "boolean" }
+  },
+  decorators: [withMap(FARNHAM, zoom)]
 };

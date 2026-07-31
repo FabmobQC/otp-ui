@@ -23,6 +23,7 @@
     "@opentripplanner/base-map": "workspace:^",
     "@opentripplanner/core-utils": "workspace:^",
     "maplibre-gl": "catalog:",
+    "@turf/turf": "7.3.5",
     "point-in-polygon": "^1.1.0"
   },
   "devDependencies": {

@@ -1,0 +1,802 @@
+{
+    "agency": {
+        "id": "2:mrc-brome-missisquoi",
+        "name": "MRC Brome-Missisquoi",
+        "url": "https://www.mrcbm.qc.ca/",
+        "timezone": "America/Montreal",
+        "lang": "fr",
+        "phone": "450 266-4900"
+    },
+    "color": "333333",
+    "id": "2:route-farnham",
+    "longName": null,
+    "mode": "BUS",
+    "origColor": null,
+    "shortName": "Farnham",
+    "type": 3,
+    "v2": true,
+    "pending": false,
+    "desc": null,
+    "bikesAllowed": "NO_INFORMATION",
+    "routeBikesAllowed": "NO_INFORMATION",
+    "textColor": null,
+    "url": null,
+    "containingPatterns": {},
+    "patterns": {
+        "UGF0dGVybjoyOnJvdXRlLWZhcm5oYW06OjAx": {
+            "id": "UGF0dGVybjoyOnJvdXRlLWZhcm5oYW06OjAx",
+            "headsign": null,
+            "name": "Farnham",
+            "patternGeometry": null,
+            "stops": [
+                {
+                    "code": null,
+                    "id": "2:location-group-46112-farnham",
+                    "lat": 45.2793745,
+                    "lon": -72.9705593,
+                    "name": "Farnham",
+                    "locationType": "STOP",
+                    "geometries": {
+                        "geoJson": {
+                            "type": "GeometryCollection",
+                            "geometries": [
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.99473,
+                                        45.287093
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979978,
+                                        45.291309
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.950147,
+                                        45.258042
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.959346,
+                                        45.282866
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979131,
+                                        45.277808
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.983007,
+                                        45.278081
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.988679,
+                                        45.282692
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.963582,
+                                        45.250763
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.971996,
+                                        45.282049
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.972435,
+                                        45.289548
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.968477,
+                                        45.284582
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.97692,
+                                        45.283997
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.980708,
+                                        45.261249
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.959712,
+                                        45.271859
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.965666,
+                                        45.291362
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.937202,
+                                        45.2975
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.984358,
+                                        45.290583
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.96219,
+                                        45.275819
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.962222,
+                                        45.2873
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.97106,
+                                        45.275707
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979882,
+                                        45.274294
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.990348,
+                                        45.27732
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.954063,
+                                        45.277815
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.896529,
+                                        45.253144
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -73.01415,
+                                        45.284885
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.972811,
+                                        45.274648
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979079,
+                                        45.283225
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.985933,
+                                        45.253581
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.982575,
+                                        45.270545
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.968977,
+                                        45.288541
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.961793,
+                                        45.292271
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.972743,
+                                        45.285878
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.982414,
+                                        45.275192
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.963638,
+                                        45.277535
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.955702,
+                                        45.304952
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.961181,
+                                        45.273112
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.993438,
+                                        45.287901
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.975204,
+                                        45.291296
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.955338,
+                                        45.272672
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.973466,
+                                        45.277603
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.988974,
+                                        45.278337
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.981084,
+                                        45.285554
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.988808,
+                                        45.286775
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.983884,
+                                        45.25835
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.967892,
+                                        45.281495
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.967701,
+                                        45.286272
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.95417,
+                                        45.283022
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.974117,
+                                        45.283028
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.984074,
+                                        45.273097
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.966396,
+                                        45.273788
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.961869,
+                                        45.294199
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.919307,
+                                        45.266938
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "parentStation": null,
+                    "color": "#666666"
+                },
+                {
+                    "code": null,
+                    "id": "2:location-group-46112-farnham",
+                    "lat": 45.2793745,
+                    "lon": -72.9705593,
+                    "name": "Farnham",
+                    "locationType": "STOP",
+                    "geometries": {
+                        "geoJson": {
+                            "type": "GeometryCollection",
+                            "geometries": [
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.99473,
+                                        45.287093
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979978,
+                                        45.291309
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.950147,
+                                        45.258042
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.959346,
+                                        45.282866
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979131,
+                                        45.277808
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.983007,
+                                        45.278081
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.988679,
+                                        45.282692
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.963582,
+                                        45.250763
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.971996,
+                                        45.282049
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.972435,
+                                        45.289548
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.968477,
+                                        45.284582
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.97692,
+                                        45.283997
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.980708,
+                                        45.261249
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.959712,
+                                        45.271859
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.965666,
+                                        45.291362
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.937202,
+                                        45.2975
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.984358,
+                                        45.290583
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.96219,
+                                        45.275819
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.962222,
+                                        45.2873
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.97106,
+                                        45.275707
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979882,
+                                        45.274294
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.990348,
+                                        45.27732
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.954063,
+                                        45.277815
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.896529,
+                                        45.253144
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -73.01415,
+                                        45.284885
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.972811,
+                                        45.274648
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.979079,
+                                        45.283225
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.985933,
+                                        45.253581
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.982575,
+                                        45.270545
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.968977,
+                                        45.288541
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.961793,
+                                        45.292271
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.972743,
+                                        45.285878
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.982414,
+                                        45.275192
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.963638,
+                                        45.277535
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.955702,
+                                        45.304952
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.961181,
+                                        45.273112
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.993438,
+                                        45.287901
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.975204,
+                                        45.291296
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.955338,
+                                        45.272672
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.973466,
+                                        45.277603
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.988974,
+                                        45.278337
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.981084,
+                                        45.285554
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.988808,
+                                        45.286775
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.983884,
+                                        45.25835
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.967892,
+                                        45.281495
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.967701,
+                                        45.286272
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.95417,
+                                        45.283022
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.974117,
+                                        45.283028
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.984074,
+                                        45.273097
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.966396,
+                                        45.273788
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.961869,
+                                        45.294199
+                                    ]
+                                },
+                                {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        -72.919307,
+                                        45.266938
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "parentStation": null,
+                    "color": "#666666"
+                }
+            ],
+            "desc": "Farnham",
+            "geometry": {
+                "length": 0,
+                "points": ""
+            }
+        }
+    }
+}
