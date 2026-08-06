@@ -294,9 +294,8 @@ const FabMobRouteViewerOverlayFlex = (
     <>
       {groups.map((group, index) => (
         <>
-          <Source id={`lines-${index}`} type="geojson" data={group.lines}>
+          <Source type="geojson" data={group.lines}>
             <Layer
-              id={`lines-${index}`}
               layout={{
                 "line-cap": "round",
                 "line-join": "round"
@@ -309,14 +308,8 @@ const FabMobRouteViewerOverlayFlex = (
               type="line"
             />
           </Source>
-          <Source
-            key={index}
-            id={`stops-${index}`}
-            type="geojson"
-            data={group.stops}
-          >
+          <Source key={index} type="geojson" data={group.stops}>
             <Layer
-              id={`stops-${index}`}
               minzoom={8}
               paint={{
                 "circle-radius": 3,
@@ -330,9 +323,8 @@ const FabMobRouteViewerOverlayFlex = (
           </Source>
         </>
       ))}
-      <Source id="arcs" type="geojson" data={arcs}>
+      <Source type="geojson" data={arcs}>
         <Layer
-          id="arcs"
           layout={{
             "line-cap": "round",
             "line-join": "round"
@@ -431,9 +423,8 @@ const RouteViewerOverlay = (props: Props): JSX.Element => {
   };
 
   return segments.length > 0 ? (
-    <Source id="route" type="geojson" data={geojson}>
+    <Source type="geojson" data={geojson}>
       <Layer
-        id="route"
         layout={{
           "line-cap": "round",
           "line-join": "round"
