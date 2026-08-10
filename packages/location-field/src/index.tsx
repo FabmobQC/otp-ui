@@ -298,6 +298,7 @@ const LocationField = ({
   ],
   getCurrentPosition,
   hideExistingValue = false,
+  customLabelInputId,
   initialSearchResults = null,
   inputPlaceholder = null,
   isRequired = false,
@@ -391,6 +392,7 @@ const LocationField = ({
         setAbortController([...abortControllers, newController]);
 
         getGeocoder(geocoderConfig)
+          // Other options such as headers will also be included in the autocomplete call.
           .autocomplete({ text, options: { signal: newController.signal } })
           // TODO: Better type?
           .then(
@@ -1062,8 +1064,10 @@ const LocationField = ({
   let menuItemCount = indexedOptionLookup.length;
 
   /** the text input element * */
-  // Use this text for aria-label below.
-  const defaultPlaceholder = inputPlaceholder || locationType;
+  // Use this text for aria-label below if no user-provided label.
+  const defaultPlaceholder =
+    inputPlaceholder || (customLabelInputId ? undefined : locationType);
+  const ariaLabel = customLabelInputId ? undefined : defaultPlaceholder;
   const placeholder =
     currentPosition && currentPosition.fetching
       ? intl.formatMessage({ id: "otpUi.LocationField.fetchingLocation" })
@@ -1081,10 +1085,11 @@ const LocationField = ({
       aria-expanded={isExpanded}
       aria-haspopup="listbox"
       aria-invalid={!isValid}
-      aria-label={defaultPlaceholder}
+      aria-label={ariaLabel}
       aria-required={isRequired}
       autoFocus={autoFocus}
       className={formControlClassname}
+      id={customLabelInputId}
       onChange={onTextInputChange}
       onClick={handleTextInputClick}
       onBlur={onFieldBlur}
@@ -1129,6 +1134,7 @@ const LocationField = ({
         onClick={onDropdownToggle}
         tabIndex={-1}
         type="button"
+        aria-disabled={hasNoEnabledOptions}
       >
         <LocationIconComponent locationType={locationType} />
       </S.DropdownButton>

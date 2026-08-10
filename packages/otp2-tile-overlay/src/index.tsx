@@ -20,6 +20,7 @@ const AREA_TYPES = ["areaStops"];
 const STOPS_AND_STATIONS_TYPE = "OTP-UI-stopsAndStations";
 
 const OTP2TileLayerWithPopup = ({
+  closedStops,
   color,
   configCompanies,
   feeds,
@@ -33,6 +34,10 @@ const OTP2TileLayerWithPopup = ({
   stopsWhitelist,
   type
 }: {
+  /** A set of gtfsIds for stops that are closed. When provided, the map popup for a closed stop will
+   * display a note indicating the cancellation
+   */
+  closedStops?: Set<string>;
   color?: string;
   /**
    * Optional configuration item which allows for customizing properties of scooter and
@@ -85,16 +90,22 @@ const OTP2TileLayerWithPopup = ({
    */
   type: string;
   visible?: boolean;
-}): JSX.Element => {
+}): JSX.Element | undefined => {
   const { current: map } = useMap();
+  if (!map) {
+    return undefined;
+  }
 
   // TODO: handle this complex type: it can be a stop, a station, and some extra fields too
   const [clickedEntity, setClickedEntity] = useState<any>(null);
 
   const defaultClickHandler = (event: MapLayerMouseEvent) => {
-    const { sourceLayer } = event.features?.[0];
+    const sourceLayer = event.features?.[0]?.sourceLayer;
+    const properties = event.features?.[0]?.properties;
+    const stopGtfsId = sourceLayer === "stops" ? properties?.gtfsId : "";
     const synthesizedEntity: Record<string, any> = {
-      ...event.features?.[0].properties,
+      ...properties,
+      closed: stopGtfsId && closedStops?.has(stopGtfsId),
       lat: event.lngLat.lat,
       lon: event.lngLat.lng,
       sourceLayer
@@ -268,7 +279,7 @@ const OTP2TileLayerWithPopup = ({
                     setClickedEntity(null);
                     setLocation(location);
                   }
-                : null
+                : undefined
             }
             setViewedStop={
               setViewedStop
@@ -276,7 +287,7 @@ const OTP2TileLayerWithPopup = ({
                     setClickedEntity(null);
                     setViewedStop(stop);
                   }
-                : null
+                : undefined
             }
           />
         </Popup>
@@ -310,11 +321,12 @@ const generateOTP2TileLayers = (
   }[],
   endpoint: string,
   setLocation?: (location: MapLocationActionArg) => void,
-  setViewedStop?: (stop: Stop) => void,
+  setViewedStop?: StopEventHandler,
   stopsWhitelist?: string[],
   configCompanies?: ConfiguredCompany[],
   getEntityPrefix?: (entity: Stop | VehicleRentalStation) => JSX.Element,
-  feeds?: Feed[]
+  feeds?: Feed[],
+  closedStops?: Set<string>
 ): JSX.Element[] => {
   const fakeOtpUiLayerIndex = layers.findIndex(
     l => l.type === STOPS_AND_STATIONS_TYPE
@@ -340,6 +352,7 @@ const generateOTP2TileLayers = (
       const id = `${type}${network ? `-${network}` : ""}`;
       return (
         <OTP2TileLayerWithPopup
+          closedStops={closedStops}
           color={color}
           configCompanies={configCompanies}
           feeds={feeds}
