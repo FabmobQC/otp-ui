@@ -55,6 +55,7 @@ type Props = {
    * the properties that this component actually uses.
    */
   routeData: RouteData;
+  shouldNotCenterMap?: boolean;
 };
 
 // helper fn to check if geometry has been populated for all patterns in route
@@ -346,9 +347,12 @@ const FabMobRouteViewerOverlayFlex = (
  */
 const RouteViewerOverlay = (props: Props): JSX.Element => {
   const { current } = useMap();
-  const { routeData } = props;
+  const { routeData, shouldNotCenterMap } = props;
   const patterns = Object.values(routeData.patterns);
   useEffect(() => {
+    if (shouldNotCenterMap) {
+      return;
+    }
     // if pattern geometry updated, update the map points
     let bounds: LngLatBounds | undefined;
     let timeout: NodeJS.Timeout | undefined;
